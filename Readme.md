@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
 * Студент: [Андрей Степанов](https://up.htmlacademy.ru/nodejs-api/5/user/2140935).
-* Наставник: `Неизвестно`.
+* Наставник: [Александр Сушко](https://htmlacademy.ru/profile/sashasushko).
 
 ---
 
