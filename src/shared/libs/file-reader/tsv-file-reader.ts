@@ -22,10 +22,10 @@ export class TSVFileReader implements FileReader {
       .split('\n')
       .filter((row) => row.trim().length > 0)
       .map((line) => line.split('\t'))
-      .map(([title, description, publishedDate, city, preview, photos, premium, favorite, rating, type, roomsCount, guestsCount, price, facility, name, email, avatar, password, isPro, commentsCount, location]) => ({
+      .map(([title, description, date, city, preview, photos, premium, favorite, rating, type, rooms, guests, price, facility, name, email, avatar, password, isPro, commentsCount, location]) => ({
         title,
         description,
-        publishedDate: new Date(publishedDate),
+        publishedDate: new Date(date),
         city: Cities[city as 'Paris' | 'Cologne' | 'Brussels' | 'Amsterdam' | 'Hamburg' | 'Dusseldorf'],
         preview,
         photos: photos.split(';'),
@@ -33,8 +33,8 @@ export class TSVFileReader implements FileReader {
         favorite: favorite === 'true',
         rating: Number.parseFloat(rating),
         type: PropertyType[type as 'apartment' | 'house' | 'room' | 'hotel'],
-        roomsCount: Number.parseInt(roomsCount, 10),
-        guestsCount: Number.parseInt(guestsCount, 10),
+        roomsCount: Number.parseInt(rooms, 10),
+        guestsCount: Number.parseInt(guests, 10),
         price: Number.parseInt(price, 10),
         convienience: Facilities[facility as 'Breakfast' | 'AirConditioning' | 'LaptopFriendlyWorkspace' | 'BabySeat' | 'Washer' | 'Towels' | 'Fridge'],
         author: {
