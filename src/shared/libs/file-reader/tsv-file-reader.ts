@@ -36,7 +36,9 @@ export class TSVFileReader implements FileReader {
         roomsCount: Number.parseInt(rooms, 10),
         guestsCount: Number.parseInt(guests, 10),
         price: Number.parseInt(price, 10),
-        convienience: Facilities[facility as 'Breakfast' | 'AirConditioning' | 'LaptopFriendlyWorkspace' | 'BabySeat' | 'Washer' | 'Towels' | 'Fridge'],
+        facilities: facility.split(',')
+          .filter((item) => Object.values(Facilities).includes(item as Facilities))
+          .map((item) => item as Facilities),
         author: {
           name,
           email,

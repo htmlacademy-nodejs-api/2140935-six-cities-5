@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { Command } from './command.interface.js';
@@ -38,7 +39,7 @@ export class VersionCommand implements Command {
   public async execute(..._parameters: string[]): Promise<void> {
     try {
       const version = this.readVersion();
-      console.info(version);
+      console.info(`${chalk.bold('Six Cities:')} ${chalk.green(version)}`);
     } catch (error: unknown) {
       console.error(`Failed to read version from ${this.filePath}`);
 
