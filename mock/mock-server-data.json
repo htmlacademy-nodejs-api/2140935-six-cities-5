@@ -55,38 +55,16 @@
       "hotel-08.jpg",
       "hotel-09.jpg"
     ],
-    "types": [
-      "Apartment",
-      "House",
-      "Room",
-      "Hotel",
-      "Villa",
-      "Bungalow",
-      "Resort",
-      "Cottage",
-      "Chalet"
-    ],
-    "comforts": [
-      "Breakfast",
-      "Air conditioning",
-      "Laptop friendly workspace",
-      "Baby seat",
-      "Washer",
-      "Free Wi-Fi",
-      "Room service",
-      "Fitness center",
-      "Swimming pool"
-    ],
-    "firstname": [
-      "Dougie",
-      "Laura",
-      "John",
-      "Douglas",
-      "Alex",
-      "Sophie",
-      "David",
-      "Emma",
-      "Michael"
+    "names": [
+      "Dougie Smith",
+      "Laura Johnson",
+      "John Davis",
+      "Douglas Thompson",
+      "Alex Brown",
+      "Sophie Wilson",
+      "David Clark",
+      "Emma Taylor",
+      "Michael Harris"
     ],
     "emails": [
       "reception1@hotel.com",
@@ -98,6 +76,17 @@
       "reception7@hotel.com",
       "reception8@hotel.com",
       "reception9@hotel.com"
+    ],
+    "passwords": [
+      "P@ssw0rd1",
+      "SecurePwd123",
+      "HotelPass!23",
+      "Welcome@456",
+      "SafePassword789",
+      "SecretPwd!2022",
+      "StrongP@ss",
+      "Pass123word",
+      "HotelGuest!2023"
     ],
     "avatarsPath": [
       "avatar1.jpg",
