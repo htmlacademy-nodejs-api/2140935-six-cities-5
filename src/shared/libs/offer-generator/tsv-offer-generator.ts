@@ -54,8 +54,7 @@ export class TSVOfferGenerator implements OfferGenerator {
     return [
       title, description, publishedDate, city, preview,
       photos.join(';'), isPremium, isFavorite, rating, property,
-      roomsCount, guestsCount, price, facilities, name, email, avatar,
-      password, isPro, author, commentsCount, latitude, longitude, location,
+      roomsCount, guestsCount, price, facilities.join(';'), author.join(' '), commentsCount, location.join(';'),
     ].join('\t');
   }
 }
