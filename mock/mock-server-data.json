@@ -1,0 +1,114 @@
+{
+  "api": {
+    "titles": [
+      "Lemoral Apart Otel",
+      "Beautiful Beach Resort",
+      "Sunset View Hotel",
+      "Cozy Retreat Inn",
+      "Oceanfront Paradise Hotel",
+      "Mountain Hideaway Lodge",
+      "Urban Escape Hotel",
+      "Tranquil Oasis Inn",
+      "Riverside Lodge"
+    ],
+    "descriptions": [
+      "Great hotel with outstanding seaview",
+      "Experience the beauty of our beachfront resort",
+      "Enjoy breathtaking sunsets from your room",
+      "A cozy retreat surrounded by nature",
+      "Wake up to the sound of waves at our oceanfront paradise",
+      "Escape to the mountains and relax in our hideaway lodge",
+      "Experience tranquility in the heart of the city",
+      "Find peace and relaxation at our oasis inn",
+      "Enjoy the serene riverside atmosphere"
+    ],
+    "cities": [
+      "Alanya",
+      "Istanbul",
+      "Antalya",
+      "Bodrum",
+      "Cappadocia",
+      "Fethiye",
+      "Kusadasi",
+      "Marmaris",
+      "Pamukkale"
+    ],
+    "previews": [
+      "img/hotel_preview.jpg",
+      "img/beach_resort_preview.jpg",
+      "img/sunset_hotel_preview.jpg",
+      "img/cozy_retreat_preview.jpg",
+      "img/oceanfront_hotel_preview.jpg",
+      "img/mountain_lodge_preview.jpg",
+      "img/urban_hotel_preview.jpg",
+      "img/tranquil_inn_preview.jpg",
+      "img/riverside_lodge_preview.jpg"
+    ],
+    "images": [
+      "hotel-01.jpg",
+      "hotel-02.jpg",
+      "hotel-03.jpg",
+      "hotel-04.jpg",
+      "hotel-05.jpg",
+      "hotel-06.jpg",
+      "hotel-07.jpg",
+      "hotel-08.jpg",
+      "hotel-09.jpg"
+    ],
+    "types": [
+      "Apartment",
+      "House",
+      "Room",
+      "Hotel",
+      "Villa",
+      "Bungalow",
+      "Resort",
+      "Cottage",
+      "Chalet"
+    ],
+    "comforts": [
+      "Breakfast",
+      "Air conditioning",
+      "Laptop friendly workspace",
+      "Baby seat",
+      "Washer",
+      "Free Wi-Fi",
+      "Room service",
+      "Fitness center",
+      "Swimming pool"
+    ],
+    "firstname": [
+      "Dougie",
+      "Laura",
+      "John",
+      "Douglas",
+      "Alex",
+      "Sophie",
+      "David",
+      "Emma",
+      "Michael"
+    ],
+    "emails": [
+      "reception1@hotel.com",
+      "reception2@hotel.com",
+      "reception3@hotel.com",
+      "reception4@hotel.com",
+      "reception5@hotel.com",
+      "reception6@hotel.com",
+      "reception7@hotel.com",
+      "reception8@hotel.com",
+      "reception9@hotel.com"
+    ],
+    "avatarsPath": [
+      "avatar1.jpg",
+      "avatar2.jpg",
+      "avatar3.jpg",
+      "avatar4.jpg",
+      "avatar5.jpg",
+      "avatar6.jpg",
+      "avatar7.jpg",
+      "avatar8.jpg",
+      "avatar9.jpg"
+    ]
+  }
+}
