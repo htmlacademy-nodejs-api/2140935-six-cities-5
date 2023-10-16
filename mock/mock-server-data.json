@@ -34,15 +34,15 @@
       "Pamukkale"
     ],
     "previews": [
-      "img/hotel_preview.jpg",
-      "img/beach_resort_preview.jpg",
-      "img/sunset_hotel_preview.jpg",
-      "img/cozy_retreat_preview.jpg",
-      "img/oceanfront_hotel_preview.jpg",
-      "img/mountain_lodge_preview.jpg",
-      "img/urban_hotel_preview.jpg",
-      "img/tranquil_inn_preview.jpg",
-      "img/riverside_lodge_preview.jpg"
+      "hotel_preview.jpg",
+      "beach_resort_preview.jpg",
+      "sunset_hotel_preview.jpg",
+      "cozy_retreat_preview.jpg",
+      "oceanfront_hotel_preview.jpg",
+      "mountain_lodge_preview.jpg",
+      "urban_hotel_preview.jpg",
+      "tranquil_inn_preview.jpg",
+      "riverside_lodge_preview.jpg"
     ],
     "images": [
       "hotel-01.jpg",

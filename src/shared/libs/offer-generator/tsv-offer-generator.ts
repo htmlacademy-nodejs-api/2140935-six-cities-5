@@ -1,7 +1,10 @@
+import dayjs from 'dayjs';
 import { OfferGenerator } from './offer-generator.interface.js';
 import { MockServerData, Property, Facility } from '../../types/index.js';
-import { generateRandomValue, getRandomItem, getRandomItems, getRandomDate } from '../../helpers/index.js';
+import { generateRandomValue, getRandomItem, getRandomItems } from '../../helpers/index.js';
 
+const FIRST_WEEK_DAY = 1;
+const LAST_WEEK_DAY = 7;
 
 const MIN_PRICE = 500;
 const MAX_PRICE = 2000;
@@ -28,7 +31,9 @@ export class TSVOfferGenerator implements OfferGenerator {
   public generate(): string {
     const title = getRandomItem<string>(this.mockData.titles);
     const description = getRandomItem<string>(this.mockData.descriptions);
-    const publishedDate = getRandomDate();
+    const publishedDate = dayjs()
+      .subtract(generateRandomValue(FIRST_WEEK_DAY, LAST_WEEK_DAY), 'day')
+      .toISOString();
     const city = getRandomItem<string>(this.mockData.cities);
     const preview = getRandomItem<string>(this.mockData.previews);
     const photos = getRandomItems<string>(this.mockData.images);
@@ -54,7 +59,7 @@ export class TSVOfferGenerator implements OfferGenerator {
     return [
       title, description, publishedDate, city, preview,
       photos.join(';'), isPremium, isFavorite, rating, property,
-      roomsCount, guestsCount, price, facilities.join(';'), author.join(' '), commentsCount, location.join(';'),
+      roomsCount, guestsCount, price, facilities.join(';'), author.join('\t'), commentsCount, location.join(';'),
     ].join('\t');
   }
 }
