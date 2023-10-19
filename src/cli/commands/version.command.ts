@@ -26,7 +26,7 @@ export class VersionCommand implements Command {
     const importedContent: unknown = JSON.parse(jsonContent);
 
     if (! isPackageJSONConfig(importedContent)) {
-      throw new Error('Failed to parse json content.');
+      throw new Error(chalk.red('Failed to parse json content.'));
     }
 
     return importedContent.version;
