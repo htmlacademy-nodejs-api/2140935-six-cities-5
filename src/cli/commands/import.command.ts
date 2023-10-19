@@ -14,7 +14,7 @@ export class ImportCommand implements Command {
   }
 
   private onCompleteImport(count: number) {
-    console.info(`${count} rows imported.`);
+    console.info(chalk.green(`${count} rows imported.`));
   }
 
   public async execute(...parameters: string[]): Promise<void> {
