@@ -5,9 +5,10 @@
 /dist/
 /docs/
 .idea/*
-/mock/mock-data.tsv
-todo.txt
 
 .DS_Store
 coverage
 *.log
+*.tsv
+.env
+todo.txt
