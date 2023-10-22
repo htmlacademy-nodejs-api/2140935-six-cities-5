@@ -34,12 +34,13 @@ export class RestApplication {
     await this._initDb();
 
     const user = await UserModel.create({
-      email: 'test@email.local',
-      avatarPath: 'keks.jpg',
-      firstname: 'Keks',
+      email: 'test@mail.com',
+      avatarPath: 'keksa.jpg',
+      firstname: 'Asasa',
       lastname: 'Unknown'
     });
-    console.log(user);
+    const error = user.validateSync();
+    console.log(error);
 
     this.logger.info('Init database completed');
   }
