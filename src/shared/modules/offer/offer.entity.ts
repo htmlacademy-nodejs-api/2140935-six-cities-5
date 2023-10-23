@@ -1,5 +1,6 @@
 import { defaultClasses, getModelForClass, modelOptions, prop, Ref, Severity } from '@typegoose/typegoose';
-import { Facility, City, Property } from '../../types/index.js';
+import { DescriptionLength, GuestsNumber, OfferTitleLength, PriceValue, RatingValue, RoomsNumber } from '../../const/index.js';
+import { Facility, City, Property, Location } from '../../types/index.js';
 import { UserEntity } from '../user/index.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
