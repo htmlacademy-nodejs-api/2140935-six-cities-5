@@ -18,7 +18,6 @@ export function createOffer(data: string): Offer {
     name,
     email,
     avatar,
-    password,
     isPro,
     commentsCount,
     location] = data.replace('\n', '').split('\t');
@@ -42,7 +41,6 @@ export function createOffer(data: string): Offer {
       name,
       email,
       avatar,
-      password,
       isPro: isPro === 'true',
     },
     commentsCount: Number.parseInt(commentsCount, 10),
