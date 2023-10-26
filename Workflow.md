@@ -8,7 +8,7 @@
 npm run mock:server
 ```
 
-Команда генерации тестовых данных в файл **.tsv**.
+Команда генерации 100 тестовых данных в файл **.tsv**.
 
 ```bash
 npm run ts ./src/main.cli.ts -- --generate 100 ./mock/mock-data.tsv http://localhost:3123/api
@@ -17,7 +17,7 @@ npm run ts ./src/main.cli.ts -- --generate 100 ./mock/mock-data.tsv http://local
 Команда импорта тестовых данных из файла **.tsv** в БД.
 
 ```bash
-npm run ts ./src/main.cli.ts -- --import ./mock/mock-data.tsv admin totoro 127.0.0.1 27017 sixcities
+npm run ts ./src/main.cli.ts -- --import ./mock/mock-data.tsv admin totoro localhost sixcities 27017
 ```
 
 ## Окружение
