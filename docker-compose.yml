@@ -6,7 +6,7 @@ services:
     container_name: six-cities_mongodb
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: totoro
+      MONGO_INITDB_ROOT_PASSWORD: test
     ports:
       - 27017:27017
     volumes:
@@ -20,8 +20,8 @@ services:
       - 8081:8081
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
-      ME_CONFIG_MONGODB_ADMINPASSWORD: totoro
-      ME_CONFIG_MONGODB_URL: mongodb://admin:totoro@db:27017/
+      ME_CONFIG_MONGODB_ADMINPASSWORD: test
+      ME_CONFIG_MONGODB_URL: mongodb://admin:test@db:27017/
 
 volumes:
   six-cities_data:
