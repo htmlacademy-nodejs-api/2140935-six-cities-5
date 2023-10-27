@@ -16,7 +16,7 @@ export class ImportCommand implements Command {
   private offerService: OfferService;
   private databaseClient: DatabaseClient;
   private logger: Logger;
-  private salt: string;
+  private salt!: string;
 
   constructor() {
     this.onImportedLine = this.onImportedLine.bind(this);

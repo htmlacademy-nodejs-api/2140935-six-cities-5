@@ -50,7 +50,8 @@
       "hotel-06.jpg",
       "hotel-07.jpg",
       "hotel-08.jpg",
-      "hotel-09.jpg"
+      "hotel-09.jpg",
+      "hotel-10.jpg"
     ],
     "names": [
       "Dougie Smith",
@@ -61,7 +62,8 @@
       "Sophie Wilson",
       "David Clark",
       "Emma Taylor",
-      "Michael Harris"
+      "Michael Harris",
+      "Paul Morris"
     ],
     "emails": [
       "reception1@hotel.com",
@@ -72,18 +74,8 @@
       "reception6@hotel.com",
       "reception7@hotel.com",
       "reception8@hotel.com",
-      "reception9@hotel.com"
-    ],
-    "passwords": [
-      "Pssw0rd1",
-      "SecurePwd123",
-      "HotelPass!23",
-      "Welcome456",
-      "SafePassword789",
-      "SecretPwd!2022",
-      "StrongPss",
-      "Pass123word",
-      "HotelGuest!2023"
+      "reception9@hotel.com",
+      "reception10@hotel.com"
     ],
     "avatarsPath": [
       "avatar1.jpg",
@@ -94,7 +86,8 @@
       "avatar6.jpg",
       "avatar7.jpg",
       "avatar8.jpg",
-      "avatar9.jpg"
+      "avatar9.jpg",
+      "avatar10.jpg"
     ]
   }
 }
