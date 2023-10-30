@@ -1,0 +1,124 @@
+openapi: 3.0.0
+
+info:
+  title: Описание API сервера проекта «Шесть городов».
+  description: |-
+    * Описание маршрутов сервера проекта.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 2.0.0
+
+tags:
+  - name: offers
+    description: Действия с объявлениями.
+  - name: premium
+    description: Действия с премиальными объявлениями.
+  - name: favorites
+    description: Действия с избранными объявлениями.
+  - name: comments
+    description: Действия с комментариями.
+  - name: users
+    description: Действия с пользователем.
+
+paths:
+  /offers:
+    get:
+      tags:
+        - offers
+      summary: Получение списка предложений по аренде.
+      description: Возвращает массив предложений. Каждое предложение описано в виде объекта.
+    post:
+      tags:
+        - offers
+      summary: Создание нового предложения.
+      description: Создает новое предложение.
+
+  /offers/{offerId}:
+    get:
+      tags:
+        - offers
+      summary: Получение детальной информации о предложении.
+      description: Возвращает предложение с идентификатором offerId.
+    put:
+      tags:
+        - offers
+      summary: Редактирование предложения.
+      description: Обновляет/изменяет предложение с идентификатором offerId.
+    delete:
+      tags:
+        - offers
+      summary: Удаление предложения.
+      description: Удаляет предложение с идентификатором offerId.
+
+  /premium/{city}:
+    get:
+      tags:
+        - premium
+      summary: Получение списка премиальных предложений для города.
+      description: Возвращает массив предложений для города со статусом Premium.
+
+  /favorites:
+    get:
+      tags:
+        - favorites
+      summary: Получения списка предложений, добавленных в избранное.
+      description: Возвращает массив предложений, добавленных в избранное.
+
+  /favorites/{offerId}/{status}:
+    post:
+      tags:
+        - favorites
+      summary: Добавление/удаление предложения в/из избранное.
+      description: Возвращает предложение с идентификатором offerId с актуальным состоянием поля isFavorite
+
+  /comments/{offerId}:
+    get:
+      tags:
+        - comments
+      summary: Получение списка комментариев для предложения.
+      description: Возвращает список комментариев для предложения с идентификатором offerId.
+
+    post:
+      tags:
+        - comments
+      summary: Добавление комментария для предложения.
+      description: Добавляет новый комментарий для предложения с идентификатором offerId.
+
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Создание нового пользователя
+      description: Регистрирует нового пользователя.
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Вход в закрытую часть приложения
+      description: Авторизует пользователя на основе логина и пароля
+
+    get:
+      tags:
+        - users
+      summary: Проверка состояния пользователя
+      description: Возвращает информацию по авторизованному пользователю
+
+  /users/logout:
+    post:
+      tags:
+        - users
+      summary: Выход из закрытой части приложения.
+      description: Разлогинивает пользователя и закрывает доступ к закрытой части приложения.
+
+  /users/{userId}/avatar:
+    post:
+      tags:
+        - users
+      summary: Загрузить изображение аватара
+      description: Загружает изображение аватара пользователя. Изображение
+        аватара должно быть в формате `png` или `jpg`.
+
+
+
