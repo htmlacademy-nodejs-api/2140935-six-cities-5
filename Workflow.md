@@ -17,7 +17,7 @@ npm run ts ./src/main.cli.ts -- --generate 100 ./mock/mock-data.tsv http://local
 Команда импорта тестовых данных из файла **.tsv** в БД.
 
 ```bash
-npm run ts ./src/main.cli.ts -- --import ./mock/mock-data.tsv admin totoro localhost sixcities 27017
+npm run ts ./src/main.cli.ts -- --import ./mock/mock-data.tsv admin totoro localhost sixcities secret
 ```
 
 ## Окружение

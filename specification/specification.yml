@@ -1,0 +1,761 @@
+openapi: 3.0.0
+
+info:
+  title: Описание API сервера проекта «Шесть городов».
+  description: |-
+    * Описание маршрутов сервера проекта.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 2.0.0
+
+tags:
+  - name: offers
+    description: Действия с объявлениями.
+  - name: premium
+    description: Действия с премиальными объявлениями.
+  - name: favorites
+    description: Действия с избранными объявлениями.
+  - name: comments
+    description: Действия с комментариями.
+  - name: users
+    description: Действия с пользователем.
+
+paths:
+  /offers:
+    get:
+      tags:
+        - offers
+      summary: Получение списка предложений по аренде.
+      description: Возвращает массив предложений. Каждое предложение описано в виде объекта.
+      responses:
+        "200":
+          description: Массив избранных предложений
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offers'
+
+    post:
+      tags:
+        - offers
+      summary: Создание нового предложения.
+      description: Создает новое предложение.
+      parameters:
+      - name: X-Token
+        in: header
+        description: Авторизационный токен пользователя
+        example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Информация для создания нового предложения.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/changeOffer'
+        required: true
+      responses:
+        "201":
+          description: Новое предложение создано. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+        "401":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authError'
+
+  /offers/{offerId}:
+    get:
+      tags:
+        - offers
+      summary: Получение детальной информации о предложении.
+      description: Возвращает предложение с идентификатором offerId.
+      parameters:
+      - name: offerId
+        in: path
+        description: Уникальный идентификатор предложения
+        required: true
+        schema:
+          type: integer
+          example: 1
+      responses:
+        "200":
+          description: Объект предложения
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+        "400":
+          description: Ошибка тела запроса.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/noOfferError'
+
+    put:
+      tags:
+        - offers
+      summary: Редактирование предложения.
+      description: Обновляет/изменяет предложение с идентификатором offerId.
+      parameters:
+      - name: offerId
+        in: path
+        description: Уникальный идентификатор предложения
+        required: true
+        schema:
+          type: integer
+          example: 1
+      - name: X-Token
+        in: header
+        description: Авторизационный токен пользователя
+        example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Информация для обновления предложения.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/changeOffer'
+        required: true
+      responses:
+        "200":
+          description: Предложение успешно обновлено. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+        "401":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authError'
+
+    delete:
+      tags:
+        - offers
+      summary: Удаление предложения.
+      description: Удаляет предложение с идентификатором offerId.
+      parameters:
+      - name: offerId
+        in: path
+        description: Уникальный идентификатор предложения
+        required: true
+        schema:
+          type: integer
+          example: 1
+      - name: X-Token
+        in: header
+        description: Авторизационный токен пользователя
+        example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Оффер успешно удален.
+        "400":
+          description: Ошибка тела запроса.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/noOfferError'
+        "401":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authError'
+
+  /premium/{city}:
+    get:
+      tags:
+        - premium
+      summary: Получение списка премиальных предложений для города.
+      description: Возвращает массив премиальных предложений для города.
+      parameters:
+      - name: X-Token
+        in: header
+        description: Авторизационный токен пользователя
+        example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Массив премиальных предложений
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offers'
+        "400":
+          description: Ошибка тела запроса.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/noCityError'
+        "401":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authError'
+
+  /favorites:
+    get:
+      tags:
+        - favorites
+      summary: Получения списка предложений, добавленных в избранное.
+      description: Возвращает массив предложений, добавленных в избранное.
+      parameters:
+      - name: X-Token
+        in: header
+        description: Авторизационный токен пользователя
+        example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Массив избранных предложений
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offers'
+        "401":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authError'
+
+  /favorites/{offerId}/{status}:
+    post:
+      tags:
+        - favorites
+      summary: Добавление/удаление предложения в/из избранное.
+      description: Возвращает предложение с идентификатором offerId с актуальным состоянием поля isFavorite
+      parameters:
+      - name: offerId
+        in: path
+        description: Уникальный идентификатор предложения
+        required: true
+        schema:
+          type: integer
+          example: 1
+      - name: status
+        in: path
+        description: Статус избранного предложения. Может быть 1 или 0, где 1 добавляет предложение в избранное, а 0 удаляет
+        required: true
+        schema:
+          type: integer
+          example: 1
+      - name: X-Token
+        in: header
+        description: Авторизационный токен пользователя
+        example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Объект предложения
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offer'
+        "400":
+          description: Ошибка тела запроса.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/noOfferError'
+        "401":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authError'
+
+  /comments/{offerId}:
+    get:
+      tags:
+        - comments
+      summary: Получение списка комментариев для предложения.
+      description: Возвращает список комментариев для предложения с идентификатором offerId.
+      parameters:
+      - name: offerId
+        in: path
+        description: Уникальный идентификатор предложения
+        required: true
+        schema:
+          type: integer
+          example: 1
+      - name: X-Token
+        in: header
+        description: Авторизационный токен пользователя
+        example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Массив комментариев для предложения с идентификатором offerId
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/commentInfo'
+        "400":
+          description: Ошибка тела запроса.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/noOfferError'
+        "401":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authError'
+
+    post:
+      tags:
+        - comments
+      summary: Добавление комментария для предложения.
+      description: Добавляет новый комментарий для предложения с идентификатором offerId.
+      parameters:
+      - name: offerId
+        in: path
+        description: Уникальный идентификатор предложения
+        required: true
+        schema:
+          type: integer
+          example: 1
+      - name: X-Token
+        in: header
+        description: Авторизационный токен пользователя
+        example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Объект с новым комментарием.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/comment'
+        required: true
+      responses:
+        "200":
+          description: Массив комментариев для предложения с идентификатором offerId
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/commentInfo'
+        "400":
+          description: Ошибка тела запроса.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/noOfferError'
+        "401":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authError'
+
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Создание нового пользователя
+      description: Регистрирует нового пользователя.
+      requestBody:
+        description: Информация для создания нового пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+        required: true
+      responses:
+        "201":
+          description: Пользователь зарегистрирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authUser'
+        "409":
+          description: Пользователь с таким email уже существует.
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Вход в закрытую часть приложения
+      description: Авторизует пользователя на основе логина и пароля
+      requestBody:
+        description: Объект, содержащий логин и пароль пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/login'
+        required: true
+      responses:
+        "200":
+          description: Статус авторизации.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authUser'
+        "400":
+          description: Ошибка тела запроса.
+
+    get:
+      tags:
+        - users
+      summary: Проверка состояния пользователя.
+      description: Возвращает информацию по авторизованному пользователю.
+      parameters:
+        - name: X-Token
+          in: header
+          description: Авторизационный токен пользователя
+          example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Статус авторизации пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authUser'
+        "401":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authError'
+
+  /users/logout:
+    post:
+      tags:
+        - users
+      summary: Выход из закрытой части приложения.
+      description: Разлогинивает пользователя и закрывает доступ к закрытой части приложения.
+      parameters:
+        - name: X-Token
+          in: header
+          description: Авторизационный токен пользователя
+          example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Сеанс завершён.
+
+components:
+  schemas:
+
+    changeOffer:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Beautiful & luxurious studio at great location"
+        description:
+          type: string
+          example: "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam."
+        city:
+          type: string
+          example: "Amsterdam"
+        preview:
+          type: string
+          example: "previmage.jpg"
+        images:
+          type: array
+          items:
+            type: string
+            example: "image1.jpg"
+        isPremium:
+          type: boolean
+          example: true
+        isFavorite:
+          type: boolean
+          example: false
+        rating:
+          type: number
+          example: 4.8
+        property:
+          type: string
+          example: "apartment"
+        roomsCount:
+          type: number
+          example: 2
+        guestsCount:
+          type: number
+          example: 2
+        price:
+          type: number
+          example: 200
+        goods:
+          type: array
+          items:
+            type: string
+            example: "Heating"
+        userId:
+          type: number
+          example: 1
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+              example: 52.35514938496378
+            longitude:
+              type: number
+              example: 4.673877537499948
+      required:
+        - title
+        - description
+        - city
+        - preview
+        - images
+        - isPremium
+        - isFavorite
+        - rating
+        - property
+        - roomsCount
+        - guestsCount
+        - price
+        - goods
+        - userId
+        - location
+
+    offer:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        title:
+          type: string
+          example: "Beautiful & luxurious studio at great location"
+        description:
+          type: string
+          example: "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam."
+        publishedDate:
+          type: string
+          format: date-time
+          example: "Mon Oct 30 2023 10:50:28 GMT+0500 (Екатеринбург, стандартное время)"
+        city:
+          type: string
+          example: "Amsterdam"
+        preview:
+          type: string
+          example: "previmage.jpg"
+        images:
+          type: array
+          items:
+            type: string
+            example: "image1.jpg"
+        isPremium:
+          type: boolean
+          example: true
+        isFavorite:
+          type: boolean
+          example: false
+        rating:
+          type: number
+          example: 4.8
+        property:
+          type: string
+          example: "apartment"
+        roomsCount:
+          type: number
+          example: 2
+        guestsCount:
+          type: number
+          example: 2
+        price:
+          type: number
+          example: 200
+        goods:
+          type: array
+          items:
+            type: string
+            example: "Heating"
+        author:
+          $ref: '#/components/schemas/user'
+        commentsCount:
+          type: number
+          example: 2
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+              example: 52.35514938496378
+            longitude:
+              type: number
+              example: 4.673877537499948
+      required:
+        - id
+        - title
+        - description
+        - publishedDate
+        - city
+        - preview
+        - images
+        - isPremium
+        - isFavorite
+        - rating
+        - property
+        - roomsCount
+        - guestsCount
+        - price
+        - goods
+        - author
+        - commentsCount
+        - location
+
+    offers:
+      type: array
+      items:
+        $ref: '#/components/schemas/offer'
+
+    authUser:
+      type: object
+
+      properties:
+        name:
+          type: string
+          example: Parrot Kesha
+
+        email:
+          type: string
+          example: kesha@parrot.com
+
+        avatar:
+          type: string
+          example: avatar1.jpg
+
+        isPro:
+          type: boolean
+          example: false
+
+        token:
+          type: string
+          example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
+
+    user:
+      type: object
+
+      properties:
+        name:
+          type: string
+          example: Parrot Kesha
+
+        email:
+          type: string
+          example: kesha@parrot.com
+
+        avatar:
+          type: string
+          example: avatar1.jpg
+
+        isPro:
+          type: boolean
+          example: false
+
+    login:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: kesha@parrot.com
+
+        password:
+          type: string
+          example: 12345678
+
+    commentInfo:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 1
+          text:
+            type: string
+            example: "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam."
+          date:
+            type: string
+            example: "Mon Oct 30 2023 10:50:28 GMT+0500 (Екатеринбург, стандартное время)"
+          rating:
+            type: number
+            example: 4
+          user:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "Parrot Kesha"
+              id:
+                type: integer
+                example: 1
+              avatar:
+                type: boolean
+                example: "avatarimg1.png"
+              isPro:
+                type: boolean
+                example: false
+        required:
+          - text
+          - date
+          - id
+          - rating
+          - user
+
+    comment:
+      type: object
+      properties:
+        text:
+          type: string
+          example: "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam."
+        rating:
+          type: integer
+          example: 4
+
+    noOfferError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Hotel id 999 does not exist."
+
+    noCityError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "City Amsterdam does not exist."
+
+    authError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "You are not logged in or you do not have permission to this page."
