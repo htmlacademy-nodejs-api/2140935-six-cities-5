@@ -54,7 +54,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/newOffer'
+              $ref: '#/components/schemas/changeOffer'
         required: true
       responses:
         "201":
@@ -104,6 +104,13 @@ paths:
       summary: Редактирование предложения.
       description: Обновляет/изменяет предложение с идентификатором offerId.
       parameters:
+      - name: offerId
+        in: path
+        description: Уникальный идентификатор предложения
+        required: true
+        schema:
+          type: integer
+          example: 1
       - name: X-Token
         in: header
         description: Авторизационный токен пользователя
@@ -155,6 +162,12 @@ paths:
       responses:
         "204":
           description: Оффер успешно удален.
+        "400":
+          description: Ошибка тела запроса.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/noOfferError'
         "401":
           description: Пользователь не авторизован.
           content:
@@ -454,7 +467,7 @@ paths:
 components:
   schemas:
 
-    newOffer:
+    changeOffer:
       type: object
       properties:
         title:
@@ -528,17 +541,6 @@ components:
         - goods
         - userId
         - location
-
-    changeOffer:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: number
-              example: 1
-          required:
-            - id
-        - $ref: '#/components/schemas/newOffer'
 
     offer:
       type: object
