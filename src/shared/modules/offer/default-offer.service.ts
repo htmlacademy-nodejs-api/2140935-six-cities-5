@@ -4,6 +4,7 @@ import { City, Component, SortType } from '../../types/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { OfferEntity } from './offer.entity.js';
+import { UserEntity } from '../user/user.entity.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
 import { DEFAULT_OFFERS_COUNT, MAX_PREMIUM_OFFERS_COUNT } from './offer.constant.js';
@@ -12,7 +13,8 @@ import { DEFAULT_OFFERS_COUNT, MAX_PREMIUM_OFFERS_COUNT } from './offer.constant
 export class DefaultOfferService implements OfferService {
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
-    @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>
+    @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>,
+    @inject(Component.UserModel) private readonly userModel: types.ModelType<UserEntity>
   ) {}
 
   public async find(count?: number): Promise<DocumentType<OfferEntity>[]> {
@@ -59,20 +61,29 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  public async findFavorites(): Promise<DocumentType<OfferEntity>[]> {
-    return this.offerModel
-      .find({isFavorite: true}, {}, {})
-      .sort({createdAt: SortType.Down})
-      .populate(['userId'])
-      .exec();
+  public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[] | null> {
+    return this.userModel
+      .findById(userId, {favorites: true, _id: false})
+      .populate<{favorites: DocumentType<OfferEntity>[]}>('favorites', {}, '', {sort: {createdAt: SortType.Down}})
+      .orFail()
+      .exec()
+      .then((res) => res.favorites);
   }
 
-  public async changeFavoriteStatus(offerId: string, status: number): Promise<DocumentType<OfferEntity> | null> {
+  public async changeFavoriteStatus(userId: string, offerId: string, status: number): Promise<DocumentType<OfferEntity> | null> {
     const isFavorite = status === 1;
-    return this.offerModel
-      .findByIdAndUpdate(offerId, {isFavorite}, {new: true})
-      .populate(['userId'])
-      .exec();
+    const user = await this.userModel.findById(userId).orFail();
+    const offer = await this.offerModel.findById(offerId).orFail();
+    const offerRef = user.favorites.find((favorite) => favorite.toString() === offerId);
+
+    if (isFavorite && offerRef && !user.favorites.includes(offerRef)) {
+      user.favorites.push(offerRef);
+    } else if (!isFavorite && offerRef && user.favorites.includes(offerRef)) {
+      user.favorites = user.favorites.filter((favorite) => favorite.toString() !== offerId);
+    }
+
+    await user.save();
+    return offer;
   }
 
   public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
