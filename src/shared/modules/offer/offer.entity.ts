@@ -1,6 +1,6 @@
 import { defaultClasses, getModelForClass, modelOptions, prop, Ref, Severity } from '@typegoose/typegoose';
 import { DescriptionLength, GuestsNumber, OfferTitleLength, PriceValue, RatingValue, RoomsNumber } from '../../const/index.js';
-import { Facility, City, Property, Location } from '../../types/index.js';
+import { Goods, City, Property, Location } from '../../types/index.js';
 import { UserEntity } from '../user/index.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -34,7 +34,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     require: true,
     default: new Date(),
   })
-  public publishedDate!: Date;
+  public offerDate!: Date;
 
   @prop({
     type: () => String,
@@ -53,13 +53,13 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     require: true,
     default: [],
   })
-  public photos!: string[];
+  public images!: string[];
 
   @prop({
     require: true,
     default: false,
   })
-  public premium!: boolean;
+  public isPremium!: boolean;
 
   @prop({
     require: true,
@@ -104,17 +104,17 @@ export class OfferEntity extends defaultClasses.TimeStamps {
 
   @prop({
     type: () => [String],
-    enum: Facility,
+    enum: Goods,
     require: true,
     default: []
   })
-  public facilities!: Facility[];
+  public goods!: Goods[];
 
   @prop({
     ref: UserEntity,
     require: true,
   })
-  public author!: Ref<UserEntity>;
+  public userId!: Ref<UserEntity>;
 
   @prop({
     default: 0,
