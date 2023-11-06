@@ -23,7 +23,7 @@ export class ImportCommand implements Command {
     this.onCompleteImport = this.onCompleteImport.bind(this);
 
     this.logger = new ConsoleLogger();
-    this.offerService = new DefaultOfferService(this.logger, OfferModel);
+    this.offerService = new DefaultOfferService(this.logger, OfferModel, UserModel);
     this.userService = new DefaultUserService(this.logger, UserModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
   }
@@ -40,8 +40,8 @@ export class ImportCommand implements Command {
   }
 
   private async saveOffer(offer: Offer) {
-    const user = await this.userService.findOrCreate({ ...offer.author, password: DEFAULT_USER_PASSWORD}, this.salt);
-    await this.offerService.create({ ...offer, author: user.id });
+    const user = await this.userService.findOrCreate({ ...offer.user, password: DEFAULT_USER_PASSWORD}, this.salt);
+    await this.offerService.create({ ...offer, userId: user.id });
   }
 
   public getName(): string {

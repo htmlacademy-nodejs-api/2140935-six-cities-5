@@ -12,10 +12,6 @@ info:
 tags:
   - name: offers
     description: Действия с объявлениями.
-  - name: premium
-    description: Действия с премиальными объявлениями.
-  - name: favorites
-    description: Действия с избранными объявлениями.
   - name: comments
     description: Действия с комментариями.
   - name: users
@@ -97,8 +93,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/noOfferError'
+        "401":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authError'
 
-    put:
+    patch:
       tags:
         - offers
       summary: Редактирование предложения.
@@ -132,6 +134,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/offer'
+        "400":
+          description: Ошибка тела запроса.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/noOfferError'
         "401":
           description: Пользователь не авторизован.
           content:
@@ -178,7 +186,7 @@ paths:
   /premium/{city}:
     get:
       tags:
-        - premium
+        - offers
       summary: Получение списка премиальных предложений для города.
       description: Возвращает массив премиальных предложений для города.
       parameters:
@@ -212,7 +220,7 @@ paths:
   /favorites:
     get:
       tags:
-        - favorites
+        - offers
       summary: Получения списка предложений, добавленных в избранное.
       description: Возвращает массив предложений, добавленных в избранное.
       parameters:
@@ -240,7 +248,7 @@ paths:
   /favorites/{offerId}/{status}:
     post:
       tags:
-        - favorites
+        - offers
       summary: Добавление/удаление предложения в/из избранное.
       description: Возвращает предложение с идентификатором offerId с актуальным состоянием поля isFavorite
       parameters:
@@ -554,7 +562,7 @@ components:
         description:
           type: string
           example: "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam."
-        publishedDate:
+        offerDate:
           type: string
           format: date-time
           example: "Mon Oct 30 2023 10:50:28 GMT+0500 (Екатеринбург, стандартное время)"
@@ -595,9 +603,9 @@ components:
           items:
             type: string
             example: "Heating"
-        author:
+        user:
           $ref: '#/components/schemas/user'
-        commentsCount:
+        commentCount:
           type: number
           example: 2
         location:
@@ -613,7 +621,7 @@ components:
         - id
         - title
         - description
-        - publishedDate
+        - offerDate
         - city
         - preview
         - images
@@ -625,8 +633,8 @@ components:
         - guestsCount
         - price
         - goods
-        - author
-        - commentsCount
+        - user
+        - commentCount
         - location
 
     offers:
