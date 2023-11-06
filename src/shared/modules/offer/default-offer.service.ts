@@ -74,7 +74,7 @@ export class DefaultOfferService implements OfferService {
     return user.favorites;
   }
 
-  /*//public async changeFavoriteStatus(userId: string, offerId: string, status: number): Promise<DocumentType<OfferEntity> | null> {
+  /*TODO public async changeFavoriteStatus(userId: string, offerId: string, status: number): Promise<DocumentType<OfferEntity> | null> {
     const isFavorite = status === 1;
     const user = await this.userModel.findById(userId).orFail();
     const offer = await this.offerModel.findById(offerId).orFail();
