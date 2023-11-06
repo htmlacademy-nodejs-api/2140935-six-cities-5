@@ -30,7 +30,7 @@ export function createOffer(data: string): Offer {
     preview,
     images: photos.split(';'),
     isPremium: premium === 'true',
-    isFavorite: favorite === 'true',
+    isFavorite: favorite === 'false',
     rating: Number.parseFloat(rating),
     property: property as Property,
     roomsCount: Number.parseInt(rooms, 10),
@@ -42,7 +42,7 @@ export function createOffer(data: string): Offer {
       email,
       avatar,
       isPro: isPro === 'true',
-      favorites: [],
+      //favorites: [],
     },
     commentCount: Number.parseInt(commentCount, 10),
     location: {

@@ -93,8 +93,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/noOfferError'
+        "401":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authError'
 
-    put:
+    patch:
       tags:
         - offers
       summary: Редактирование предложения.
@@ -128,6 +134,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/offer'
+        "400":
+          description: Ошибка тела запроса.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/noOfferError'
         "401":
           description: Пользователь не авторизован.
           content:
