@@ -62,12 +62,16 @@ export class DefaultOfferService implements OfferService {
   }
 
   public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[] | null> {
-    return this.userModel
+    const user = await this.userModel
       .findById(userId, {favorites: true, _id: false})
       .populate<{favorites: DocumentType<OfferEntity>[]}>('favorites', {}, '', {sort: {createdAt: SortType.Down}})
       .orFail()
-      .exec()
-      .then((res) => res.favorites);
+      .exec();
+
+    user.favorites.forEach((offer) => {
+      offer.isFavorite = true;
+    });
+    return user.favorites;
   }
 
   public async changeFavoriteStatus(userId: string, offerId: string, status: number): Promise<DocumentType<OfferEntity> | null> {
@@ -83,6 +87,7 @@ export class DefaultOfferService implements OfferService {
     }
 
     await user.save();
+    offer.isFavorite = isFavorite;
     return offer;
   }
 

@@ -26,4 +26,11 @@ export class DefaultCommentService implements CommentService {
       .exec();
   }
 
+  public async deleteByOfferId(offerId: string): Promise<number> {
+    const result = await this.commentModel
+      .deleteMany({offerId})
+      .exec();
+
+    return result.deletedCount;
+  }
 }
