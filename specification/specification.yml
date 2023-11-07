@@ -554,7 +554,7 @@ components:
       type: object
       properties:
         id:
-          type: number
+          type: string
           example: 1
         title:
           type: string
