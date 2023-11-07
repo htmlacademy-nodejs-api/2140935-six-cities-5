@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { BaseController, HttpMethod } from '../../libs/rest/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { Component } from '../../types/index.js';
@@ -16,10 +16,11 @@ export class UserController extends BaseController {
     this.addRoute({ path: '/register', method: HttpMethod.Post, handler: this.create });
   }
 
-  public create(
+  public async create(
     _req: CreateUserRequest,
-    _res: Response
-  ): void {
+    _res: Response,
+    _next: NextFunction
+  ): Promise<void> {
     throw new Error('[UserController] Oops');
   }
 }
