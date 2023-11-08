@@ -12,3 +12,8 @@ Content-Type: application/json
 }
 
 ###
+
+## Список комментариев к объявлению
+GET http://localhost:5000/offers/6548c5f143927a226009bbb2/comments HTTP/1.1
+
+###
