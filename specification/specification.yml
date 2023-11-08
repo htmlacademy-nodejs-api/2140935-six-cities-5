@@ -731,9 +731,9 @@ components:
                 type: boolean
                 example: false
         required:
+          - id
           - text
           - date
-          - id
           - rating
           - user
 
