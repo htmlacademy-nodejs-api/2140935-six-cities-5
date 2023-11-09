@@ -1,11 +1,25 @@
+import { IsEmail, IsString, IsBoolean, Length } from 'class-validator';
+import { CreateUserMessages } from './create-user.messages.js';
 //import { Ref } from '@typegoose/typegoose';
 //import { OfferEntity } from '../../../modules/offer/offer.entity.js';
 
 export class CreateUserDto {
-  public name: string;
-  public email: string;
-  public avatar: string;
-  public password: string;
-  public isPro: boolean;
-  //public favorites: Ref<OfferEntity>[];
+  @IsString({ message: CreateUserMessages.name.invalidFormat })
+  @Length(1, 15, { message: CreateUserMessages.name.lengthField })
+  public name!: string;
+
+  @IsEmail({}, { message: CreateUserMessages.email.invalidFormat })
+  public email!: string;
+
+  @IsString({ message: CreateUserMessages.avatar.invalidFormat })
+  public avatar!: string; //TODO регулярка? на наличие .png или .jpg в строке + сделать необязательным
+
+  @IsString({ message: CreateUserMessages.password.invalidFormat })
+  @Length(6, 12, { message: CreateUserMessages.password.lengthField })
+  public password!: string;
+
+  @IsBoolean({ message: CreateUserMessages.isPro.invalidFormat })
+  public isPro!: boolean;
+
+  //public favorites: Ref<OfferEntity>[]; //TODO избранное
 }
