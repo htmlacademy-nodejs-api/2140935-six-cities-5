@@ -21,7 +21,7 @@ Content-Type: application/json
 
 {
   "email": "jones23@overlook.net",
-  "password": "123"
+  "password": "123456"
 }
 
 ###
