@@ -28,8 +28,8 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({ required: true })
   public isPro: boolean;
 
-  //@prop({required: true, ref: () => OfferEntity, _id: false, default: [], type: () => [String]})
-  //public favorites: Ref<OfferEntity>[];
+  @prop({required: true, default: [] })
+  public favorites: string[];
 
   constructor(userData: User) {
     super();
@@ -38,7 +38,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
     this.email = userData.email;
     this.avatar = userData.avatar;
     this.isPro = userData.isPro;
-    //this.favorites = userData.favorites;
+    this.favorites = userData.favorites;
   }
 
   public setPassword(password: string, salt: string) {

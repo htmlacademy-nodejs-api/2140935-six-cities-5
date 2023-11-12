@@ -1,7 +1,5 @@
 import { IsEmail, IsString, IsBoolean, Length } from 'class-validator';
 import { CreateUserMessages } from './create-user.messages.js';
-//import { Ref } from '@typegoose/typegoose';
-//import { OfferEntity } from '../../../modules/offer/offer.entity.js';
 
 export class CreateUserDto {
   @IsString({ message: CreateUserMessages.name.invalidFormat })
@@ -21,5 +19,5 @@ export class CreateUserDto {
   @IsBoolean({ message: CreateUserMessages.isPro.invalidFormat })
   public isPro!: boolean;
 
-  //public favorites: Ref<OfferEntity>[]; //TODO избранное
+  public favorites: string[];
 }

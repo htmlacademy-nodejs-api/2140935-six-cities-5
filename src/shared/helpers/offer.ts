@@ -42,7 +42,7 @@ export function createOffer(data: string): Offer {
       email,
       avatar,
       isPro: isPro === 'true',
-      //favorites: [],
+      favorites: [],
     },
     commentCount: Number.parseInt(commentCount, 10),
     location: {

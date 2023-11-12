@@ -74,7 +74,7 @@ export class DefaultOfferService implements OfferService {
     return user.favorites;
   }
 
-  /*TODO public async changeFavoriteStatus(userId: string, offerId: string, status: number): Promise<DocumentType<OfferEntity> | null> {
+  public async changeFavoriteStatus(userId: string, offerId: string, status: number): Promise<DocumentType<OfferEntity> | null> {
     const isFavorite = status === 1;
     const user = await this.userModel.findById(userId).orFail();
     const offer = await this.offerModel.findById(offerId).orFail();
@@ -89,7 +89,21 @@ export class DefaultOfferService implements OfferService {
     await user.save();
     offer.isFavorite = isFavorite;
     return offer;
-  }*/
+  }
+
+  public async addFavorite(offerId: string, userId: string): Promise<void> {
+    await this.userModel.updateOne(
+      {_id: userId},
+      { $addToSet: { favorites: offerId } }
+    );
+  }
+
+  public async deleteFavorite(offerId: string, userId: string): Promise<void> {
+    await this.userModel.updateOne(
+      {_id: userId},
+      { $pull: { favorites: offerId } }
+    );
+  }
 
   public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
