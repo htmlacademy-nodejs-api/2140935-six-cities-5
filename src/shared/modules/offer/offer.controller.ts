@@ -32,7 +32,21 @@ export default class OfferController extends BaseController {
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ]
     });
-    this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Get,
+      handler: this.index,
+    });
+    this.addRoute({
+      path: '/favorites',
+      method: HttpMethod.Get,
+      handler: this.index
+    });
+    this.addRoute({
+      path: '/premium',
+      method: HttpMethod.Get,
+      handler: this.index
+    });
     this.addRoute({
       path: '/',
       method: HttpMethod.Post,
@@ -73,11 +87,19 @@ export default class OfferController extends BaseController {
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ]
     });
+    this.addRoute({
+      path: '/premium/:city',
+      method: HttpMethod.Get,
+      handler: this.index,
+    });
+
   }
 
-  public async show({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
+  public async show({ params, tokenPayload }: Request<ParamOfferId>, res: Response): Promise<void> {
     const { offerId } = params;
-    const offer = await this.offerService.findById(offerId);
+    const offer = await this.offerService.findWithAggregation(offerId, tokenPayload.id);
+    console.log(offerId); //TODO
+    console.log(tokenPayload.id); //TODO
     this.ok(res, fillDTO(OfferRdo, offer));
   }
 
@@ -108,4 +130,5 @@ export default class OfferController extends BaseController {
     const comments = await this.commentService.findByOfferId(params.offerId);
     this.ok(res, fillDTO(CommentRdo, comments));
   }
+
 }

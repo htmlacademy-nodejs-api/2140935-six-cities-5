@@ -6,9 +6,11 @@ import { City } from '../../types/city.enum.js';
 import { DocumentExists } from '../../types/index.js';
 
 export interface OfferService extends DocumentExists {
-  find(): Promise<DocumentType<OfferEntity>[]>;
+  find(count?: number): Promise<DocumentType<OfferEntity>[]>;
+  findAllFavorites(userId: string): Promise<string[]>;
   create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>>;
   findById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
+  findWithAggregation(offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null>;
   updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null>;
   deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   findPremium(city: City): Promise<DocumentType<OfferEntity>[]>;

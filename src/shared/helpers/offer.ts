@@ -30,7 +30,7 @@ export function createOffer(data: string): Offer {
     preview,
     images: photos.split(';'),
     isPremium: premium === 'true',
-    isFavorite: favorite === 'false',
+    isFavorite: favorite === 'true',
     rating: Number.parseFloat(rating),
     property: property as Property,
     roomsCount: Number.parseInt(rooms, 10),

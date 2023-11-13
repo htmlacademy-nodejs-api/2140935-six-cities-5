@@ -1,10 +1,27 @@
 # Получить объявление по идентификатору
-GET http://localhost:5000/offers/6548c5f143927a226009bba1d HTTP/1.1
+GET http://localhost:5000/offers/65508a19a106825f8c621708 HTTP/1.1+
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5Nzg4OTk0LCJleHAiOjE2OTk5NjE3OTR9.66oraZa82h9zygnc0laOae_JRjXD-Krfi9jW-qC3c0A
 
 ###
 
 ## Получить список объявлений
 GET http://localhost:5000/offers HTTP/1.1
+Content-Type: application/json
+
+###
+
+## Получить список всех избранных объявлений
+GET http://localhost:5000/offers/favorites HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5Nzg4OTk0LCJleHAiOjE2OTk5NjE3OTR9.66oraZa82h9zygnc0laOae_JRjXD-Krfi9jW-qC3c0A
+
+###
+
+## Получить список премиум офферов для заданного города (не больше 3 штук).
+GET http://localhost:5000/offers/premium
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5Nzg4OTk0LCJleHAiOjE2OTk5NjE3OTR9.66oraZa82h9zygnc0laOae_JRjXD-Krfi9jW-qC3c0A
 
 ###
 
@@ -12,6 +29,7 @@ GET http://localhost:5000/offers HTTP/1.1
 
 POST http://localhost:5000/offers HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5Nzg4OTk0LCJleHAiOjE2OTk5NjE3OTR9.66oraZa82h9zygnc0laOae_JRjXD-Krfi9jW-qC3c0A
 
 {
   "title": "Билли Саммерс",
@@ -22,7 +40,7 @@ Content-Type: application/json
   "images": ["billy-summers1.png", "billy-summers2.png", "billy-summers3.png", "billy-summers4.png", "billy-summers5.png", "billy-summers6.png"],
   "isPremium": false,
   "isFavorite": false,
-  "rating": 4.4,
+  "rating": 4,
   "property": "room",
   "roomsCount": 2,
   "guestsCount": 4,
@@ -42,11 +60,12 @@ DELETE http://localhost:5000/offers/654c4adb2ad3d28a318f15b7 HTTP/1.1
 
 ## Обновить объявление
 
-PATCH http://localhost:5000/offers/654c4b002ad3d28a318f15bd HTTP/1.1
+PATCH http://localhost:5000/offers/655117d18e0f26f8c21686d2 HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5Nzg4OTk0LCJleHAiOjE2OTk5NjE3OTR9.66oraZa82h9zygnc0laOae_JRjXD-Krfi9jW-qC3c0A
 
 {
-  "title": "Понедельник начинается в субботу3",
+  "title": "Понедельник начинается в субботу7",
   "description": "Как выиграть и не уснуть",
   "price": 44444,
   "rating": 5.0

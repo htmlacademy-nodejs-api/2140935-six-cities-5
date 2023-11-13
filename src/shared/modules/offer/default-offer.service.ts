@@ -1,4 +1,5 @@
 import { inject, injectable } from 'inversify';
+import mongoose from 'mongoose';
 import { OfferService } from './offer-service.interface.js';
 import { City, Component, SortType } from '../../types/index.js';
 import { Logger } from '../../libs/logger/index.js';
@@ -26,6 +27,15 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
+  public async findAllFavorites(userId: string): Promise<string[]> {
+    const result = await this.userModel.aggregate<DocumentType<UserEntity>>([
+      { $match: { _id: new mongoose.Types.ObjectId(userId) } },
+      { $project: { favorites: 1, _id: 0 } },
+    ]);
+    console.log(result[0].favorites);
+    return result[0].favorites;
+  }
+
   public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
     const result = await this.offerModel.create({...dto, offerDate: new Date()});
     this.logger.info(`New offer created: ${dto.title}`);
@@ -37,6 +47,49 @@ export class DefaultOfferService implements OfferService {
       .findById(offerId)
       .populate(['userId'])
       .exec();
+  }
+
+  public async findWithAggregation(offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null> {
+    const result = await this.offerModel.aggregate<DocumentType<OfferEntity>>([
+      {
+        '$match': {
+          '_id': new mongoose.Types.ObjectId(offerId)
+        },
+      },
+      {
+        '$lookup': {
+          from: 'users',
+          let: { offerId: { $toString: '$_id' } },
+          pipeline: [
+            {
+              '$match': {
+                '_id': new mongoose.Types.ObjectId(userId),
+                '$expr': {
+                  '$in': ['$$offerId', '$favorites']
+                },
+              }
+            }
+          ],
+          as: 'usersWithFavorites'
+        }
+      },
+      {
+        $addFields: {
+          isFavorite: {
+            $toBool: {
+              $size: '$usersWithFavorites'
+            }
+          }
+        }
+      },
+      {
+        $unset: 'usersWithFavorites'
+      }
+    ]).exec();
+
+    console.log(result);
+
+    return result[0];
   }
 
   public async updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
