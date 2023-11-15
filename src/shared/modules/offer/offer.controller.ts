@@ -212,7 +212,7 @@ export default class OfferController extends BaseController {
     if (updatedOffer) {
       const preRating = await this.offerService.calculateRating(params.offerId);
       const rating = preRating === null ? 0 : preRating;
-      this.ok(res, fillDTO(FullOfferRdo, {...updatedOffer.toJSON(), rating}));
+      this.ok(res, fillDTO(FullOfferRdo, {...updatedOffer, rating}));
     }
   }
 
