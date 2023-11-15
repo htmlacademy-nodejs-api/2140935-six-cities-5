@@ -1,5 +1,6 @@
 import { IsEmail, IsString, Length } from 'class-validator';
 import { CreateUserMessages } from './create-user.messages.js';
+import { UserType } from '../../../types/index.js';
 
 export class CreateUserDto {
   @IsString({ message: CreateUserMessages.name.invalidFormat })
@@ -15,7 +16,7 @@ export class CreateUserDto {
   @Length(6, 12, { message: CreateUserMessages.password.lengthField })
   public password!: string;
 
-  public isPro!: string;
+  public userType!: UserType;
 
   public favorites: string[];
 }

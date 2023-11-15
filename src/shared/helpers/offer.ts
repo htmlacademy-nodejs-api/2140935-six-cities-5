@@ -1,4 +1,4 @@
-import { City, Goods, Offer, Property } from '../types/index.js';
+import { City, Goods, Offer, Property, UserType } from '../types/index.js';
 
 export function createOffer(data: string): Offer {
   const [title,
@@ -18,7 +18,7 @@ export function createOffer(data: string): Offer {
     name,
     email,
     avatar,
-    isPro,
+    userType,
     commentCount,
     location] = data.replace('\n', '').split('\t');
 
@@ -41,7 +41,7 @@ export function createOffer(data: string): Offer {
       name,
       email,
       avatar,
-      isPro,
+      userType: userType as UserType,
       favorites: [],
     },
     commentCount: Number.parseInt(commentCount, 10),

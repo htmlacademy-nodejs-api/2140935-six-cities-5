@@ -690,7 +690,7 @@ components:
           type: string
           example: avatar1.jpg
 
-        isPro:
+        userType:
           type: string
           example: pro
 
@@ -714,7 +714,7 @@ components:
           type: string
           example: avatar1.jpg
 
-        isPro:
+        userType:
           type: string
           example: standard
 
@@ -756,7 +756,7 @@ components:
               avatar:
                 type: boolean
                 example: "avatarimg1.png"
-              isPro:
+              userType:
                 type: string
                 example: pro
         required:

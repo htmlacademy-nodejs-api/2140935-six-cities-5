@@ -43,12 +43,16 @@ npm run mock:server
 
 ```bash
 npm run cli -- --generate 100 ./mock/mock-data.tsv http://localhost:3123/api
+
+npm run ts ./src/main.cli.ts -- --generate 100 ./mock/mock-data.tsv http://localhost:3123/api
 ```
 
 Команда импорта тестовых данных из файла **.tsv** в БД.
 
 ```bash
-npm run cli -- --import ./mock/mock-data.tsv admin totoro localhost sixcities secret
+npm run cli -- --import ./mock/mock-data.tsv db_user db_password localhost db_name _salt
+
+npm run ts ./src/main.cli.ts -- --import ./mock/mock-data.tsv db_user db_password localhost db_name _salt
 ```
 
 ### Сценарии
