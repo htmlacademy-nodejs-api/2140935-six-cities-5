@@ -131,14 +131,17 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  /*public async updateById(dto: UpdateOfferDto, offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel
-      .findByIdAndUpdate(offerId, dto, {new: true})
-      .populate(['userId'])
-      .exec();
-  }*/
-
   public async updateById(dto: UpdateOfferDto, offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null> {
+    const offer = await this.offerModel.findById(offerId).exec();
+
+    if (!offer) {
+      throw new Error('Offer not found');
+    }
+
+    if (offer.userId && offer.userId.toString() !== userId) {
+      throw new Error('You can delete only your own offers');
+    }
+
     await this.offerModel.findByIdAndUpdate(offerId, dto, {new: true}).exec();
     const result = await this.offerModel.aggregate<DocumentType<OfferEntity>>([
       {
@@ -177,11 +180,21 @@ export class DefaultOfferService implements OfferService {
       }
     ]).exec();
 
-    const offer = result[0] ? result[0] : null;
-    return this.offerModel.populate(offer, { path: 'userId' });
+    const updatedOffer = result[0] ? result[0] : null;
+    return this.offerModel.populate(updatedOffer, { path: 'userId' });
   }
 
-  public async deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+  public async deleteById(offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null> {
+    const offer = await this.offerModel.findById(offerId).exec();
+
+    if (!offer) {
+      throw new Error('Offer not found');
+    }
+
+    if (offer.userId && offer.userId.toString() !== userId) {
+      throw new Error('You can delete only your own offers');
+    }
+
     return this.offerModel
       .findByIdAndDelete(offerId)
       .exec();
