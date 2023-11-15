@@ -690,9 +690,9 @@ components:
           type: string
           example: avatar1.jpg
 
-        isPro:
-          type: boolean
-          example: false
+        userType:
+          type: string
+          example: pro
 
     registerUser:
       type: object
@@ -714,9 +714,9 @@ components:
           type: string
           example: avatar1.jpg
 
-        isPro:
-          type: boolean
-          example: false
+        userType:
+          type: string
+          example: standard
 
     login:
       type: object
@@ -756,9 +756,9 @@ components:
               avatar:
                 type: boolean
                 example: "avatarimg1.png"
-              isPro:
-                type: boolean
-                example: false
+              userType:
+                type: string
+                example: pro
         required:
           - text
           - date

@@ -217,7 +217,7 @@ export class DefaultOfferService implements OfferService {
       result = offers.map((offer) => {
         const offerObject = offer.toObject();
         if (user.favorites.includes(offer._id.toString())) {
-          return { ...offerObject, isFavorite: true } as DocumentType<OfferEntity>;
+          return {...offerObject, isFavorite: true} as DocumentType<OfferEntity>;
         }
         return offerObject as DocumentType<OfferEntity>;
       });
@@ -276,7 +276,11 @@ export class DefaultOfferService implements OfferService {
     ]).exec();
 
     if (result.length > 0) {
-      return parseFloat(result[0].rating.toFixed(1)) ?? null;
+      if (result[0].rating !== null) {
+        return parseFloat(result[0].rating.toFixed(1));
+      } else {
+        return null;
+      }
     }
 
     return null;

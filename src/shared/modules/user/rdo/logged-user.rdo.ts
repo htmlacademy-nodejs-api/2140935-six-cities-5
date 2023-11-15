@@ -1,4 +1,5 @@
 import { Expose } from 'class-transformer';
+import { UserType } from '../../../types/index.js';
 
 export class LoggedUserRdo {
   @Expose()
@@ -14,5 +15,5 @@ export class LoggedUserRdo {
   public avatar: string;
 
   @Expose()
-  public isPro: boolean;
+  public userType: UserType;
 }
