@@ -217,7 +217,7 @@ export class DefaultOfferService implements OfferService {
       result = offers.map((offer) => {
         const offerObject = offer.toObject();
         if (user.favorites.includes(offer._id.toString())) {
-          return { ...offerObject, isFavorite: true } as DocumentType<OfferEntity>;
+          return {...offerObject, isFavorite: true} as DocumentType<OfferEntity>;
         }
         return offerObject as DocumentType<OfferEntity>;
       });
