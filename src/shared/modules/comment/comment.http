@@ -3,17 +3,18 @@
 
 POST http://localhost:5000/comments HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5OTY2NzQ1LCJleHAiOjE3MDAxMzk1NDV9.XQ1ZAr-HM_sDh8haCp9Dzj7eulp4CaOk448TagLZ34w
 
 {
-  "text": "Как обстоят дела с коробками? Фирменная упаковка сохранена?",
-  "rating": 4,
-  "offerId": "6548c5f143927a226009bbb2",
-  "userId": "6548c5f14311927a226009bbb5"
+  "text": "Как обстоят дела с коробками 4? Фирменная упаковка сохранена?",
+  "rating": 3,
+  "offerId": "65508a19a106825f8c621708",
+  "userId": "6550b8b073873628c3f82591"
 }
 
 ###
 
 ## Список комментариев к объявлению
-GET http://localhost:5000/offers/6548c5f143927a226009bbb2/comments HTTP/1.1
+GET http://localhost:5000/offers/65508a19a106825f8c621708/comments HTTP/1.1
 
 ###

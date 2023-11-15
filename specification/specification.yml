@@ -24,9 +24,16 @@ paths:
         - offers
       summary: Получение списка предложений по аренде.
       description: Возвращает массив предложений. Каждое предложение описано в виде объекта.
+      parameters:
+        - in: query
+          name: limit
+          description: Количество предложений, которые нужно получить (если не указано, выведет 60)
+          required: false
+          schema:
+            type: integer
       responses:
         "200":
-          description: Массив избранных предложений
+          description: Массив всех предложений по аренде
           content:
             application/json:
               schema:
@@ -183,7 +190,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/authError'
 
-  /premium/{city}:
+  /offers/premium/{city}:
     get:
       tags:
         - offers
@@ -453,24 +460,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/authError'
-
-  /users/logout:
-    post:
-      tags:
-        - users
-      summary: Выход из закрытой части приложения.
-      description: Разлогинивает пользователя и закрывает доступ к закрытой части приложения.
-      parameters:
-        - name: X-Token
-          in: header
-          description: Авторизационный токен пользователя
-          example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20
-          required: true
-          schema:
-            type: string
-      responses:
-        "204":
-          description: Сеанс завершён.
 
 components:
   schemas:

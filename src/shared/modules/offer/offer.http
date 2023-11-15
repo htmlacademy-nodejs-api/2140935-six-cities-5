@@ -1,7 +1,7 @@
 # Получить объявление по идентификатору
 GET http://localhost:5000/offers/65508a19a106825f8c621708 HTTP/1.1+
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5Nzg4OTk0LCJleHAiOjE2OTk5NjE3OTR9.66oraZa82h9zygnc0laOae_JRjXD-Krfi9jW-qC3c0A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5OTY2NzQ1LCJleHAiOjE3MDAxMzk1NDV9.XQ1ZAr-HM_sDh8haCp9Dzj7eulp4CaOk448TagLZ34w
 
 ###
 
@@ -14,22 +14,21 @@ Content-Type: application/json
 ## Получить список всех избранных объявлений
 GET http://localhost:5000/offers/favorites HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5Nzg4OTk0LCJleHAiOjE2OTk5NjE3OTR9.66oraZa82h9zygnc0laOae_JRjXD-Krfi9jW-qC3c0A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5OTY2NzQ1LCJleHAiOjE3MDAxMzk1NDV9.XQ1ZAr-HM_sDh8haCp9Dzj7eulp4CaOk448TagLZ34w
 
 ###
 
 ## Получить список премиум офферов для заданного города (не больше 3 штук).
-GET http://localhost:5000/offers/premium
+GET http://localhost:5000/offers/premium/paris HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5Nzg4OTk0LCJleHAiOjE2OTk5NjE3OTR9.66oraZa82h9zygnc0laOae_JRjXD-Krfi9jW-qC3c0A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5OTY2NzQ1LCJleHAiOjE3MDAxMzk1NDV9.XQ1ZAr-HM_sDh8haCp9Dzj7eulp4CaOk448TagLZ34w
 
 ###
 
 ## Создать новое объявление
-
 POST http://localhost:5000/offers HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5Nzg4OTk0LCJleHAiOjE2OTk5NjE3OTR9.66oraZa82h9zygnc0laOae_JRjXD-Krfi9jW-qC3c0A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5OTY2NzQ1LCJleHAiOjE3MDAxMzk1NDV9.XQ1ZAr-HM_sDh8haCp9Dzj7eulp4CaOk448TagLZ34w
 
 {
   "title": "Билли Саммерс",
@@ -54,7 +53,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb
 
 ## Удалить объявление по идентификатору
 
-DELETE http://localhost:5000/offers/654c4adb2ad3d28a318f15b7 HTTP/1.1
+DELETE http://localhost:5000/offers/6553aab20e67e0a900012370 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5OTY2NzQ1LCJleHAiOjE3MDAxMzk1NDV9.XQ1ZAr-HM_sDh8haCp9Dzj7eulp4CaOk448TagLZ34w
 
 ###
 
@@ -62,13 +63,27 @@ DELETE http://localhost:5000/offers/654c4adb2ad3d28a318f15b7 HTTP/1.1
 
 PATCH http://localhost:5000/offers/655117d18e0f26f8c21686d2 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5Nzg4OTk0LCJleHAiOjE2OTk5NjE3OTR9.66oraZa82h9zygnc0laOae_JRjXD-Krfi9jW-qC3c0A
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5OTY2NzQ1LCJleHAiOjE3MDAxMzk1NDV9.XQ1ZAr-HM_sDh8haCp9Dzj7eulp4CaOk448TagLZ34w
 
 {
-  "title": "Понедельник начинается в субботу7",
-  "description": "Как выиграть и не уснуть",
+  "title": "Kasapoglu Apart",
+  "description": "Kasapoglu Apart Cleopatra Beach",
   "price": 44444,
-  "rating": 5.0
+  "rating": 2.0
 }
+
+###
+
+# Получить комментарии по офферу
+GET http://localhost:5000/offers/65508a19a106825f8c621708/comments HTTP/1.1+
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczFAb3Zlcmxvb2suY29tIiwibmFtZSI6IkphY2sgSm9uZXMgMSIsImlkIjoiNjU1MGI4YjA3Mzg3MzYyOGMzZjgyNTkxIiwiaWF0IjoxNjk5OTY2NzQ1LCJleHAiOjE3MDAxMzk1NDV9.XQ1ZAr-HM_sDh8haCp9Dzj7eulp4CaOk448TagLZ34w
+
+###
+
+# Изменить статус isFavorite
+POST http://localhost:5000/offers/favorites/65508a19a106825f8c621708/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczU1QG92ZXJsb29rLmNvbSIsIm5hbWUiOiJKYWNrIEpvbmVzIDU1IiwiaWQiOiI2NTUzY2ExOGY1ODgxZDcwNzZlOWYyOTgiLCJpYXQiOjE3MDAwMTk0MjYsImV4cCI6MTcwMDE5MjIyNn0.hCNSEMLIHuGDQSEc0SPGVZFwbYjGhD11qiW0Rnj0U4I
 
 ###

@@ -1,14 +1,14 @@
 import { inject, injectable } from 'inversify';
 import mongoose from 'mongoose';
 import { OfferService } from './offer-service.interface.js';
-import { City, Component, SortType } from '../../types/index.js';
+import { Component, SortType } from '../../types/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { OfferEntity } from './offer.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
-import { DEFAULT_OFFERS_COUNT, MAX_PREMIUM_OFFERS_COUNT } from './offer.constant.js';
+import { MAX_PREMIUM_OFFERS_COUNT } from './offer.constant.js';
 
 @injectable()
 export class DefaultOfferService implements OfferService {
@@ -18,38 +18,59 @@ export class DefaultOfferService implements OfferService {
     @inject(Component.UserModel) private readonly userModel: types.ModelType<UserEntity>
   ) {}
 
-  public async find(count?: number): Promise<DocumentType<OfferEntity>[]> {
-    const limit = count ?? DEFAULT_OFFERS_COUNT;
+  public async find(count: number): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
-      .find({}, {}, {limit})
+      .find({})
       .sort({createdAt: SortType.Down})
-      .populate(['userId'])
+      .limit(count)
       .exec();
   }
 
-  public async findAllFavorites(userId: string): Promise<string[]> {
-    const result = await this.userModel.aggregate<DocumentType<UserEntity>>([
-      { $match: { _id: new mongoose.Types.ObjectId(userId) } },
-      { $project: { favorites: 1, _id: 0 } },
-    ]);
-    console.log(result[0].favorites);
-    return result[0].favorites;
-  }
+  public async findAuth(count: number, userId: string): Promise<DocumentType<OfferEntity>[]> {
+    console.log(userId);
+    const user = await this.userModel.findOne({ _id: userId });
+    if (!user) {
+      throw new Error('Пользователь не найден');
+    }
+    const offers = await this.offerModel
+      .find({})
+      .sort({ createdAt: SortType.Down })
+      .limit(count)
+      .exec();
 
-  public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
-    const result = await this.offerModel.create({...dto, offerDate: new Date()});
-    this.logger.info(`New offer created: ${dto.title}`);
+    const result: DocumentType<OfferEntity>[] = offers.map((offer) => {
+      const offerObject = offer.toObject();
+      if (user.favorites.includes(offer._id.toString())) {
+        return { ...offerObject, isFavorite: true } as DocumentType<OfferEntity>;
+      }
+      return offerObject as DocumentType<OfferEntity>;
+    });
+
     return result;
   }
 
-  public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel
-      .findById(offerId)
-      .populate(['userId'])
-      .exec();
+  public async findUserFavorites(userId: string): Promise<DocumentType<OfferEntity>[] | null> {
+    const userWithFavorites = await this.userModel.findById(userId);
+    if (!userWithFavorites || !Array.isArray(userWithFavorites.favorites)) {
+      return null;
+    }
+    const result = await this.offerModel.aggregate<DocumentType<OfferEntity>>([
+      {
+        '$match': {
+          '_id': { '$in': userWithFavorites.favorites.map((favoriteId) => new mongoose.Types.ObjectId(favoriteId)) }
+        }
+      },
+      {
+        '$addFields': {
+          'isFavorite': true
+        }
+      }
+    ]).exec();
+
+    return result;
   }
 
-  public async findWithAggregation(offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null> {
+  public async findFullOfferInfo(offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null> {
     const result = await this.offerModel.aggregate<DocumentType<OfferEntity>>([
       {
         '$match': {
@@ -87,9 +108,22 @@ export class DefaultOfferService implements OfferService {
       }
     ]).exec();
 
-    console.log(result);
+    const offer = await this.offerModel.populate(result[0], { path: 'userId' });
 
-    return result[0];
+    return offer;
+  }
+
+  public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
+    const result = await this.offerModel.create({...dto, offerDate: new Date()});
+    this.logger.info(`New offer created: ${dto.title}`);
+    return result;
+  }
+
+  public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+    return this.offerModel
+      .findById(offerId)
+      .populate(['userId'])
+      .exec();
   }
 
   public async updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
@@ -105,16 +139,40 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  public async findPremium(city: City): Promise<DocumentType<OfferEntity>[]> {
-    const limit = MAX_PREMIUM_OFFERS_COUNT;
-    return this.offerModel
-      .find({city: `${city}`, isPremium: true}, {}, {limit})
-      .sort({createdAt: SortType.Down})
-      .populate(['userId'])
-      .exec();
+  public async findPremium(cityName: string, userId?: string): Promise<DocumentType<OfferEntity>[]> {//TODO проставить флаг isFavorite
+    let result: DocumentType<OfferEntity>[];
+    if (userId) {
+      const user = await this.userModel.findOne({ _id: userId });
+      if (!user) {
+        throw new Error('Пользователь не найден');
+      }
+
+      const offers = await this.offerModel
+        .find({city: `${cityName}`, isPremium: true})
+        .sort({createdAt: SortType.Down})
+        .limit(MAX_PREMIUM_OFFERS_COUNT)
+        .populate(['userId'])
+        .exec();
+
+      result = offers.map((offer) => {
+        const offerObject = offer.toObject();
+        if (user.favorites.includes(offer._id.toString())) {
+          return { ...offerObject, isFavorite: true } as DocumentType<OfferEntity>;
+        }
+        return offerObject as DocumentType<OfferEntity>;
+      });
+    } else {
+      result = await this.offerModel
+        .find({city: `${cityName}`, isPremium: true})
+        .sort({createdAt: SortType.Down})
+        .limit(MAX_PREMIUM_OFFERS_COUNT)
+        .populate(['userId'])
+        .exec();
+    }
+    return result;
   }
 
-  public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[] | null> {
+  /*public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[] | null> {
     const user = await this.userModel
       .findById(userId, {favorites: true, _id: false})
       .populate<{favorites: DocumentType<OfferEntity>[]}>('favorites', {}, '', {sort: {createdAt: SortType.Down}})
@@ -125,18 +183,17 @@ export class DefaultOfferService implements OfferService {
       offer.isFavorite = true;
     });
     return user.favorites;
-  }
+  }*/ // TODO удалить если нет ошибки
 
   public async changeFavoriteStatus(userId: string, offerId: string, status: number): Promise<DocumentType<OfferEntity> | null> {
     const isFavorite = status === 1;
     const user = await this.userModel.findById(userId).orFail();
     const offer = await this.offerModel.findById(offerId).orFail();
-    const offerRef = user.favorites.find((favorite) => favorite.toString() === offerId);
 
-    if (isFavorite && offerRef && !user.favorites.includes(offerRef)) {
-      user.favorites.push(offerRef);
-    } else if (!isFavorite && offerRef && user.favorites.includes(offerRef)) {
-      user.favorites = user.favorites.filter((favorite) => favorite.toString() !== offerId);
+    if (isFavorite && !user.favorites.includes(offerId)) {
+      user.favorites.push(offer._id.toString());
+    } else if (!isFavorite && user.favorites.includes(offerId)) {
+      user.favorites = user.favorites.filter((favorite) => favorite !== offerId);
     }
 
     await user.save();
