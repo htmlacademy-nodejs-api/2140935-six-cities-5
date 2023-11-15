@@ -131,11 +131,54 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  public async updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
+  /*public async updateById(dto: UpdateOfferDto, offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, dto, {new: true})
       .populate(['userId'])
       .exec();
+  }*/
+
+  public async updateById(dto: UpdateOfferDto, offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null> {
+    await this.offerModel.findByIdAndUpdate(offerId, dto, {new: true}).exec();
+    const result = await this.offerModel.aggregate<DocumentType<OfferEntity>>([
+      {
+        '$match': {
+          '_id': new mongoose.Types.ObjectId(offerId),
+        },
+      },
+      {
+        '$lookup': {
+          'from': 'users',
+          'let': { 'offerId': { '$toString': '$_id' } },
+          'pipeline': [
+            {
+              '$match': {
+                '_id': new mongoose.Types.ObjectId(userId),
+                '$expr': {
+                  '$in': ['$$offerId', '$favorites']
+                },
+              }
+            }
+          ],
+          'as': 'usersWithFavorites'
+        }
+      },
+      {
+        '$addFields': {
+          'isFavorite': {
+            '$toBool': {
+              '$size': '$usersWithFavorites',
+            },
+          },
+        }
+      },
+      {
+        '$unset': 'usersWithFavorites',
+      }
+    ]).exec();
+
+    const offer = result[0] ? result[0] : null;
+    return this.offerModel.populate(offer, { path: 'userId' });
   }
 
   public async deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
@@ -144,7 +187,7 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  public async findPremium(cityName: string, userId?: string): Promise<DocumentType<OfferEntity>[]> {//TODO проставить флаг isFavorite
+  public async findPremium(cityName: string, userId?: string): Promise<DocumentType<OfferEntity>[]> {
     let result: DocumentType<OfferEntity>[];
     if (userId) {
       const user = await this.userModel.findOne({ _id: userId });
@@ -202,10 +245,10 @@ export class DefaultOfferService implements OfferService {
     }
 
     await user.save();
-    offer.isFavorite = isFavorite;
     return offer;
   }
 
+  /*
   public async addFavorite(offerId: string, userId: string): Promise<void> {
     await this.userModel.updateOne(
       {_id: userId},
@@ -218,7 +261,7 @@ export class DefaultOfferService implements OfferService {
       {_id: userId},
       { $pull: { favorites: offerId } }
     );
-  }
+  }*/ //TODO удалить если нет ошибки
 
   public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel

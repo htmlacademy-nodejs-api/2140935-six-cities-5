@@ -149,7 +149,10 @@ export default class OfferController extends BaseController {
     }
     await this.offerService.changeFavoriteStatus(tokenPayload.id, offerId as string, parseInt(status, 10));
     const offer = await this.offerService.findById(offerId as string);
-    this.ok(res, fillDTO(OfferRdo, offer));
+    if (!offer) {
+      throw new HttpError(StatusCodes.NOT_FOUND, 'Offer not found', '');
+    }
+    this.ok(res, fillDTO(OfferRdo, {...offer.toJSON(), isFavorite: Boolean(Number(status))}));
   }
 
   public async create({ body, tokenPayload }: CreateOfferRequest, res: Response): Promise<void> {
@@ -172,19 +175,13 @@ export default class OfferController extends BaseController {
     this.noContent(res, offer);
   }
 
-  public async update({ body, params }: Request<ParamOfferId, unknown, UpdateOfferDto>, res: Response): Promise<void> {
-    const updatedOffer = await this.offerService.updateById(params.offerId, body);
-    this.ok(res, fillDTO(OfferRdo, updatedOffer));
+  public async update({ body, params, tokenPayload }: Request<ParamOfferId, unknown, UpdateOfferDto>, res: Response): Promise<void> {
+    const updatedOffer = await this.offerService.updateById(body, params.offerId, tokenPayload.id);
+    this.ok(res, fillDTO(FullOfferRdo, updatedOffer));
   }
 
   public async getComments({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
     const comments = await this.commentService.findByOfferId(params.offerId);
     this.ok(res, fillDTO(CommentRdo, comments));
-  }
-
-  //TODO убрать после отладки
-  public async consoleLog(_req: Request, res: Response): Promise<void> {
-    console.log('Hello!');
-    this.ok(res, 'Hello!');
   }
 }
