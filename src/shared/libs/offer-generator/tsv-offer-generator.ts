@@ -9,17 +9,11 @@ const LAST_WEEK_DAY = 7;
 const MIN_PRICE = 500;
 const MAX_PRICE = 2000;
 
-const MIN_RATING = 1;
-const MAX_RATING = 5;
-
 const MIN_ROOM = 1;
 const MAX_ROOM = 4;
 
 const MIN_GUESTS = 1;
 const MAX_GUESTS = 4;
-
-const MIN_COMMENTS = 0;
-const MAX_COMMENTS = 100;
 
 const MIN_LOCATION = 1;
 const MAX_LOCATION = 10;
@@ -38,8 +32,8 @@ export class TSVOfferGenerator implements OfferGenerator {
     const preview = getRandomItem<string>(this.mockData.previews);
     const images = getRandomItems<string>(this.mockData.images);
     const isPremium = getRandomItem(['true', 'false']);
-    const isFavorite = getRandomItem(['true', 'false']);
-    const rating = generateRandomValue(MIN_RATING, MAX_RATING);
+    const isFavorite = false;
+    const rating = 0;
     const property = getRandomItem(Object.values(Property));
     const roomsCount = generateRandomValue(MIN_ROOM, MAX_ROOM);
     const guestsCount = generateRandomValue(MIN_GUESTS, MAX_GUESTS);
@@ -50,7 +44,7 @@ export class TSVOfferGenerator implements OfferGenerator {
     const avatar = getRandomItem<string>(this.mockData.avatarsPath);
     const isPro = getRandomItem(['true', 'false']);
     const user = [name, email, avatar, isPro];
-    const commentsCount = generateRandomValue(MIN_COMMENTS, MAX_COMMENTS);
+    const commentsCount = 0;
     const latitude = generateRandomValue(MIN_LOCATION, MAX_LOCATION, LOCATION_FLOAT);
     const longitude = generateRandomValue(MIN_LOCATION, MAX_LOCATION, LOCATION_FLOAT);
     const location = [latitude, longitude];
