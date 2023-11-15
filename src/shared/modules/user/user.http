@@ -42,6 +42,5 @@ Content-Type: image/png
 
 ## Проверить токен пользователя
 GET http://localhost:5000/users/login HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImphY2tqb25lczU1QG92ZXJsb29rLmNvbSIsIm5hbWUiOiJKYWNrIEpvbmVzIDU1IiwiaWQiOiI2NTUzY2ExOGY1ODgxZDcwNzZlOWYyOTgiLCJpYXQiOjE3MDAwMTk0MjYsImV4cCI6MTcwMDE5MjIyNn0.hCNSEMLIHuGDQSEc0SPGVZFwbYjGhD11qiW0Rnj0U4I
 
 ##
