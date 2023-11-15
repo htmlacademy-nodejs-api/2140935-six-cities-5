@@ -15,7 +15,4 @@ export class LoggedUserRdo {
 
   @Expose()
   public isPro: boolean;
-
-  @Expose()
-  public favorites: string[];//TODO убрать после отладки
 }

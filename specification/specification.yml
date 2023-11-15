@@ -37,7 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/offers'
+                $ref: '#/components/schemas/shortOffers'
 
     post:
       tags:
@@ -65,7 +65,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/offer'
+                $ref: '#/components/schemas/shortOffer'
         "401":
           description: Пользователь не авторизован.
           content:
@@ -210,7 +210,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/offers'
+                $ref: '#/components/schemas/shortOffers'
         "400":
           description: Ошибка тела запроса.
           content:
@@ -244,7 +244,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/offers'
+                $ref: '#/components/schemas/shortOffers'
         "401":
           description: Пользователь не авторизован.
           content:
@@ -407,7 +407,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/authUser'
+                $ref: '#/components/schemas/user'
         "409":
           description: Пользователь с таким email уже существует.
 
@@ -453,7 +453,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/authUser'
+                $ref: '#/components/schemas/user'
         "401":
           description: Пользователь не авторизован.
           content:
@@ -463,6 +463,52 @@ paths:
 
 components:
   schemas:
+
+    shortOffer:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Beautiful & luxurious studio at great location"
+        offerDate:
+          type: string
+          format: date-time
+          example: "Mon Oct 30 2023 10:50:28 GMT+0500 (Екатеринбург, стандартное время)"
+        city:
+          type: string
+          example: "Amsterdam"
+        preview:
+          type: string
+          example: "previmage.jpg"
+        isPremium:
+          type: boolean
+          example: true
+        isFavorite:
+          type: boolean
+          example: false
+        rating:
+          type: number
+          example: 4.8
+        property:
+          type: string
+          example: "apartment"
+        price:
+          type: number
+          example: 200
+        commentCount:
+          type: number
+          example: 2
+      required:
+        - title
+        - offerDate
+        - city
+        - preview
+        - isPremium
+        - isFavorite
+        - rating
+        - property
+        - price
+        - commentCount
 
     changeOffer:
       type: object
@@ -530,9 +576,6 @@ components:
     offer:
       type: object
       properties:
-        id:
-          type: string
-          example: 1
         title:
           type: string
           example: "Beautiful & luxurious studio at great location"
@@ -595,7 +638,6 @@ components:
               type: number
               example: 4.673877537499948
       required:
-        - id
         - title
         - description
         - offerDate
@@ -619,26 +661,15 @@ components:
       items:
         $ref: '#/components/schemas/offer'
 
+    shortOffers:
+      type: array
+      items:
+        $ref: '#/components/schemas/shortOffer'
+
     authUser:
       type: object
 
       properties:
-        name:
-          type: string
-          example: Parrot Kesha
-
-        email:
-          type: string
-          example: kesha@parrot.com
-
-        avatar:
-          type: string
-          example: avatar1.jpg
-
-        isPro:
-          type: boolean
-          example: false
-
         token:
           type: string
           example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
@@ -680,9 +711,6 @@ components:
       items:
         type: object
         properties:
-          id:
-            type: integer
-            example: 1
           text:
             type: string
             example: "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam."
@@ -708,7 +736,6 @@ components:
                 type: boolean
                 example: false
         required:
-          - id
           - text
           - date
           - rating
