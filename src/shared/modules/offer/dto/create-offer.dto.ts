@@ -1,4 +1,4 @@
-import { IsArray, IsDateString, IsEnum, IsInt, IsBoolean, Max, MaxLength, Min, MinLength, IsObject, ArrayMinSize, ArrayMaxSize } from 'class-validator';
+import { IsArray, IsEnum, IsInt, IsBoolean, Max, MaxLength, Min, MinLength, IsObject, ArrayMinSize, ArrayMaxSize } from 'class-validator';
 import { City, Property, Goods, Location } from '../../../types/index.js';
 import { CreateOfferValidationMessage } from './create-offer.messages.js';
 
@@ -11,7 +11,6 @@ export class CreateOfferDto {
   @MaxLength(1024, { message: CreateOfferValidationMessage.description.maxLength })
   public description!: string;
 
-  @IsDateString({}, { message: CreateOfferValidationMessage.offerDate.invalidFormat })
   public offerDate!: Date;
 
   @IsEnum(City, { message: CreateOfferValidationMessage.city.invalid })
@@ -28,13 +27,9 @@ export class CreateOfferDto {
   @IsBoolean({ message: CreateOfferValidationMessage.isPremium.invalidFormat })
   public isPremium!: boolean;
 
-  @IsBoolean({ message: CreateOfferValidationMessage.isFavorite.invalidFormat })
   public isFavorite!: boolean;
 
-  @IsInt({ message: CreateOfferValidationMessage.rating.invalidFormat })
-  @Min(1, { message: CreateOfferValidationMessage.rating.invalidFormat })
-  @Max(5, { message: CreateOfferValidationMessage.rating.invalidFormat })
-  public rating!: number; //TODO сейчас дробные рейтинги не проходят
+  public rating!: number;
 
   @IsEnum(Property, { message: CreateOfferValidationMessage.property.invalidFormat })
   public property!: Property;
@@ -60,6 +55,8 @@ export class CreateOfferDto {
   public goods!: Goods[];
 
   public userId!: string;
+
+  public commentCount!: number;
 
   @IsObject({ message: CreateOfferValidationMessage.location.invalidObject })
   public location!: Location; //TODO не проверяются значения внтури объекта

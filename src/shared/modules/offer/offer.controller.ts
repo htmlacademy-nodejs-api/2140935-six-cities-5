@@ -76,7 +76,6 @@ export default class OfferController extends BaseController {
       method: HttpMethod.Get,
       handler: this.show,
       middlewares: [
-        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
       ]
@@ -118,7 +117,12 @@ export default class OfferController extends BaseController {
 
   public async show({ params, tokenPayload }: Request<ParamOfferId>, res: Response): Promise<void> {
     const { offerId } = params;
-    const offer = await this.offerService.findFullOfferInfo(offerId, tokenPayload.id);
+    let offer;
+    if (tokenPayload) {
+      offer = await this.offerService.findFullOfferInfo(offerId, tokenPayload.id);
+    } else {
+      offer = await this.offerService.findFullOfferInfo(offerId);
+    }
     this.ok(res, fillDTO(FullOfferRdo, offer));
   }
 
@@ -139,7 +143,6 @@ export default class OfferController extends BaseController {
     this.ok(res, fillDTO(OfferRdo, offers));
   }
 
-  //favorites/{offerId}/{status}
   public async updateFavoriteStatus({ params: { offerId, status }, tokenPayload }: Request, res: Response): Promise<void> {
     if (!status || (status !== '0' && status !== '1')) {
       throw new HttpError(StatusCodes.BAD_REQUEST, 'Incorrect path Error. Check your request', '');
@@ -150,9 +153,16 @@ export default class OfferController extends BaseController {
   }
 
   public async create({ body, tokenPayload }: CreateOfferRequest, res: Response): Promise<void> {
-    const result = await this.offerService.create({ ...body, userId: tokenPayload.id });
+    const result = await this.offerService.create({
+      ...body,
+      offerDate: new Date(),
+      userId: tokenPayload.id,
+      isFavorite: false,
+      rating: 0,
+      commentCount: 0,
+    });
     const offer = await this.offerService.findById(result.id);
-    this.created(res, fillDTO(OfferRdo, offer));
+    this.created(res, fillDTO(FullOfferRdo, offer));
   }
 
   public async delete({ params }: Request<ParamOfferId>, res: Response): Promise<void> {

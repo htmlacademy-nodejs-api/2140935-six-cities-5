@@ -22,7 +22,7 @@ export default class CommentController extends BaseController {
 
     this.logger.info('Register routes for CommentController…');
     this.addRoute({
-      path: '/',
+      path: '/:offerId',
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
@@ -32,12 +32,9 @@ export default class CommentController extends BaseController {
     });
   }
 
-  public async create(
-    { body, tokenPayload }: CreateCommentRequest,
-    res: Response
-  ): Promise<void> {
-
-    if (! await this.offerService.exists(body.offerId)) {
+  public async create({ params, body, tokenPayload }: CreateCommentRequest, res: Response): Promise<void> {
+    const { offerId } = params as { offerId: string };
+    if (! await this.offerService.exists(offerId)) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
         `Offer with id ${body.offerId} not found.`,
@@ -45,8 +42,8 @@ export default class CommentController extends BaseController {
       );
     }
 
-    const comment = await this.commentService.create({ ...body, userId: tokenPayload.id });
-    await this.offerService.incCommentCount(body.offerId);
+    const comment = await this.commentService.create(body, offerId, tokenPayload.id);
+    await this.offerService.incCommentCount(offerId);
     this.created(res, fillDTO(CommentRdo, comment));
   }
 }

@@ -70,47 +70,52 @@ export class DefaultOfferService implements OfferService {
     return result;
   }
 
-  public async findFullOfferInfo(offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null> {
-    const result = await this.offerModel.aggregate<DocumentType<OfferEntity>>([
-      {
-        '$match': {
-          '_id': new mongoose.Types.ObjectId(offerId)
+  public async findFullOfferInfo(offerId: string, userId?: string): Promise<DocumentType<OfferEntity> | null> {
+    if (!userId) {
+      return this.offerModel
+        .findOne({ _id: offerId })
+        .populate('userId')
+        .exec();
+    } else {
+      const result = await this.offerModel.aggregate<DocumentType<OfferEntity>>([
+        {
+          '$match': {
+            '_id': new mongoose.Types.ObjectId(offerId)
+          },
         },
-      },
-      {
-        '$lookup': {
-          from: 'users',
-          let: { offerId: { $toString: '$_id' } },
-          pipeline: [
-            {
-              '$match': {
-                '_id': new mongoose.Types.ObjectId(userId),
-                '$expr': {
-                  '$in': ['$$offerId', '$favorites']
-                },
+        {
+          '$lookup': {
+            from: 'users',
+            let: { offerId: { $toString: '$_id' } },
+            pipeline: [
+              {
+                '$match': {
+                  '_id': new mongoose.Types.ObjectId(userId),
+                  '$expr': {
+                    '$in': ['$$offerId', '$favorites']
+                  },
+                }
+              }
+            ],
+            as: 'usersWithFavorites'
+          }
+        },
+        {
+          $addFields: {
+            isFavorite: {
+              $toBool: {
+                $size: '$usersWithFavorites'
               }
             }
-          ],
-          as: 'usersWithFavorites'
-        }
-      },
-      {
-        $addFields: {
-          isFavorite: {
-            $toBool: {
-              $size: '$usersWithFavorites'
-            }
           }
+        },
+        {
+          $unset: 'usersWithFavorites'
         }
-      },
-      {
-        $unset: 'usersWithFavorites'
-      }
-    ]).exec();
-
-    const offer = await this.offerModel.populate(result[0], { path: 'userId' });
-
-    return offer;
+      ]).exec();
+      const offer = result[0] ? result[0] : null;
+      return this.offerModel.populate(offer, { path: 'userId' });
+    }
   }
 
   public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {

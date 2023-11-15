@@ -32,12 +32,6 @@ export class UpdateOfferDto {
   public isPremium?: boolean;
 
   @IsOptional()
-  @IsInt({ message: CreateOfferValidationMessage.rating.invalidFormat })
-  @Min(1, { message: CreateOfferValidationMessage.rating.invalidFormat })
-  @Max(5, { message: CreateOfferValidationMessage.rating.invalidFormat })
-  public rating?: number; //TODO сейчас дробные рейтинги не проходят
-
-  @IsOptional()
   @IsEnum(Property, { message: CreateOfferValidationMessage.property.invalidFormat })
   public property?: Property;
 
@@ -67,5 +61,5 @@ export class UpdateOfferDto {
 
   @IsOptional()
   @IsObject({ message: CreateOfferValidationMessage.location.invalidObject })
-  public location?: Location; //TODO не проверяются значения внтури объекта
+  public location?: Location;
 }

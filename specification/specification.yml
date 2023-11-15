@@ -487,12 +487,6 @@ components:
         isPremium:
           type: boolean
           example: true
-        isFavorite:
-          type: boolean
-          example: false
-        rating:
-          type: number
-          example: 4.8
         property:
           type: string
           example: "apartment"
@@ -510,9 +504,6 @@ components:
           items:
             type: string
             example: "Heating"
-        userId:
-          type: number
-          example: 1
         location:
           type: object
           properties:
@@ -529,14 +520,11 @@ components:
         - preview
         - images
         - isPremium
-        - isFavorite
-        - rating
         - property
         - roomsCount
         - guestsCount
         - price
         - goods
-        - userId
         - location
 
     offer:

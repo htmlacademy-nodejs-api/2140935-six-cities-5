@@ -3,9 +3,6 @@ import { UserRdo } from '../../user/rdo/user.rdo.js';
 
 export class FullOfferRdo {
   @Expose()
-  public id: string;
-
-  @Expose()
   public title: string;
 
   @Expose()
