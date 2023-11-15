@@ -13,6 +13,5 @@ export class CreateCommentDto {
 
   public offerId: string;
 
-  //@IsMongoId({ message: CreateCommentMessages.userId.invalidFormat }) //TODO удалить если не получится оставить
   public userId: string;
 }

@@ -59,5 +59,5 @@ export class CreateOfferDto {
   public commentCount!: number;
 
   @IsObject({ message: CreateOfferValidationMessage.location.invalidObject })
-  public location!: Location; //TODO не проверяются значения внтури объекта
+  public location!: Location;
 }

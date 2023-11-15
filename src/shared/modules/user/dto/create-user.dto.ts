@@ -10,7 +10,7 @@ export class CreateUserDto {
   public email!: string;
 
   @IsString({ message: CreateUserMessages.avatar.invalidFormat })
-  public avatar!: string; //TODO регулярка? на наличие .png или .jpg в строке + сделать необязательным
+  public avatar!: string;
 
   @IsString({ message: CreateUserMessages.password.invalidFormat })
   @Length(6, 12, { message: CreateUserMessages.password.lengthField })
