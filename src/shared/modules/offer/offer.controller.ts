@@ -116,7 +116,8 @@ export default class OfferController extends BaseController {
     const offersWithRatings = await Promise.all(offers.map(async (offer) => {
       const preRating = await this.offerService.calculateRating(offer._id.toString());
       const rating = preRating === null ? 0 : preRating;
-      return { ...offer.toJSON(), rating };
+      const offerData = offer.toJSON ? offer.toJSON() : offer;
+      return { ...offerData, rating };
     }));
 
     this.ok(res, fillDTO(OfferRdo, offersWithRatings));
@@ -135,7 +136,8 @@ export default class OfferController extends BaseController {
     if (!offer) {
       throw new HttpError(StatusCodes.NOT_FOUND, 'Offer not found', '');
     }
-    this.ok(res, fillDTO(FullOfferRdo, {...offer.toJSON(), rating}));
+    const offerData = offer.toJSON ? offer.toJSON() : offer;
+    this.ok(res, fillDTO(FullOfferRdo, {...offerData, rating}));
   }
 
   public async getPremium({ params, tokenPayload }: Request, res: Response): Promise<void> {
@@ -151,7 +153,8 @@ export default class OfferController extends BaseController {
     const offersWithRatings = await Promise.all(offers.map(async (offer) => {
       const preRating = await this.offerService.calculateRating(offer._id.toString());
       const rating = preRating === null ? 0 : preRating;
-      return { ...offer.toJSON(), rating };
+      const offerData = offer.toJSON ? offer.toJSON() : offer;
+      return { ...offerData, rating };
     }));
 
     this.ok(res, fillDTO(OfferRdo, offersWithRatings));
@@ -164,7 +167,8 @@ export default class OfferController extends BaseController {
       const offersWithRatings = await Promise.all(offers.map(async (offer) => {
         const preRating = await this.offerService.calculateRating(offer._id.toString());
         const rating = preRating === null ? 0 : preRating;
-        return { ...offer, rating };
+        const offerData = offer.toJSON ? offer.toJSON() : offer;
+        return { ...offerData, rating };
       }));
 
       this.ok(res, fillDTO(OfferRdo, offersWithRatings));
@@ -184,7 +188,8 @@ export default class OfferController extends BaseController {
     if (!offer) {
       throw new HttpError(StatusCodes.NOT_FOUND, 'Offer not found', '');
     }
-    this.ok(res, fillDTO(OfferRdo, {...offer.toJSON(), isFavorite: Boolean(Number(status)), rating}));
+    const offerData = offer.toJSON ? offer.toJSON() : offer;
+    this.ok(res, fillDTO(OfferRdo, {...offerData, isFavorite: Boolean(Number(status)), rating}));
   }
 
   public async create({ body, tokenPayload }: CreateOfferRequest, res: Response): Promise<void> {
@@ -212,7 +217,8 @@ export default class OfferController extends BaseController {
     if (updatedOffer) {
       const preRating = await this.offerService.calculateRating(params.offerId);
       const rating = preRating === null ? 0 : preRating;
-      this.ok(res, fillDTO(FullOfferRdo, {...updatedOffer, rating}));
+      const offerData = updatedOffer.toJSON ? updatedOffer.toJSON() : updatedOffer;
+      this.ok(res, fillDTO(FullOfferRdo, {...offerData, rating}));
     }
   }
 
