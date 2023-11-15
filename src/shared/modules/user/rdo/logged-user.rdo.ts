@@ -14,5 +14,5 @@ export class LoggedUserRdo {
   public avatar: string;
 
   @Expose()
-  public isPro: boolean;
+  public isPro: string;
 }

@@ -41,7 +41,7 @@ export function createOffer(data: string): Offer {
       name,
       email,
       avatar,
-      isPro: isPro === 'true',
+      isPro,
       favorites: [],
     },
     commentCount: Number.parseInt(commentCount, 10),

@@ -691,8 +691,8 @@ components:
           example: avatar1.jpg
 
         isPro:
-          type: boolean
-          example: false
+          type: string
+          example: pro
 
     registerUser:
       type: object
@@ -715,8 +715,8 @@ components:
           example: avatar1.jpg
 
         isPro:
-          type: boolean
-          example: false
+          type: string
+          example: standard
 
     login:
       type: object
@@ -757,8 +757,8 @@ components:
                 type: boolean
                 example: "avatarimg1.png"
               isPro:
-                type: boolean
-                example: false
+                type: string
+                example: pro
         required:
           - text
           - date

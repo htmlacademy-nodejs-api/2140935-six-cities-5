@@ -11,5 +11,5 @@ export class UserRdo {
   public avatar: string;
 
   @Expose()
-  public isPro: boolean;
+  public isPro: string;
 }
