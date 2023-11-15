@@ -14,9 +14,8 @@ export interface OfferService extends DocumentExists {
   updateById(dto: UpdateOfferDto, offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null>;
   deleteById(offerId: string, userId: string): Promise<DocumentType<OfferEntity> | null>;
   findPremium(cityName: string, userId?: string): Promise<DocumentType<OfferEntity>[]>;
-  //findFavorites(userId: string): Promise<DocumentType<OfferEntity>[] | null>;
   changeFavoriteStatus(userId: string, offerId: string, status: number): Promise<DocumentType<OfferEntity> | null>;
   incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null>;
-  calculateRating(offerId: string): Promise<DocumentType<OfferEntity> | null>;
+  calculateRating(offerId: string): Promise<number | null>;
   exists(documentId: string): Promise<boolean>;
 }

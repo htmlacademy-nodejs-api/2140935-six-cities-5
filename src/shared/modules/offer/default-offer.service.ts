@@ -233,19 +233,6 @@ export class DefaultOfferService implements OfferService {
     return result;
   }
 
-  /*public async findFavorites(userId: string): Promise<DocumentType<OfferEntity>[] | null> {
-    const user = await this.userModel
-      .findById(userId, {favorites: true, _id: false})
-      .populate<{favorites: DocumentType<OfferEntity>[]}>('favorites', {}, '', {sort: {createdAt: SortType.Down}})
-      .orFail()
-      .exec();
-
-    user.favorites.forEach((offer) => {
-      offer.isFavorite = true;
-    });
-    return user.favorites;
-  }*/ // TODO удалить если нет ошибки
-
   public async changeFavoriteStatus(userId: string, offerId: string, status: number): Promise<DocumentType<OfferEntity> | null> {
     const isFavorite = status === 1;
     const user = await this.userModel.findById(userId).orFail();
@@ -261,21 +248,6 @@ export class DefaultOfferService implements OfferService {
     return offer;
   }
 
-  /*
-  public async addFavorite(offerId: string, userId: string): Promise<void> {
-    await this.userModel.updateOne(
-      {_id: userId},
-      { $addToSet: { favorites: offerId } }
-    );
-  }
-
-  public async deleteFavorite(offerId: string, userId: string): Promise<void> {
-    await this.userModel.updateOne(
-      {_id: userId},
-      { $pull: { favorites: offerId } }
-    );
-  }*/ //TODO удалить если нет ошибки
-
   public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, {'$inc': {
@@ -283,7 +255,7 @@ export class DefaultOfferService implements OfferService {
       }}).exec();
   }
 
-  public async calculateRating(offerId: string): Promise<DocumentType<OfferEntity> | null> {
+  /*public async calculateRating(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .aggregate([
         {$match: {$expr: { $eq: ['$_id', {$toObjectId: offerId}] }}},
@@ -302,6 +274,34 @@ export class DefaultOfferService implements OfferService {
       ])
       .exec()
       .then(([result]) => result ?? null);
+  }*/
+
+  public async calculateRating(offerId: string): Promise<number | null> {
+    const result = await this.offerModel.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(offerId) } },
+      {
+        $lookup: {
+          from: 'comments',
+          let: { offerId: '$_id' },
+          pipeline: [
+            { $match: { $expr: { $eq: ['$offerId', '$$offerId'] } } },
+          ],
+          as: 'comments',
+        },
+      },
+      {
+        $addFields: {
+          rating: { $avg: '$comments.rating' }, // Расчет среднего рейтинга
+        },
+      },
+      { $unset: 'comments' },
+    ]).exec();
+
+    if (result.length > 0) {
+      return result[0].rating ?? null; // Возвращает рейтинг или null, если результат не найден
+    }
+
+    return null;
   }
 
   public async exists(documentId: string): Promise<boolean> {

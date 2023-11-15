@@ -104,15 +104,22 @@ export default class OfferController extends BaseController {
   }
 
   public async index({ query: { limit }, tokenPayload }: Request, res: Response): Promise<void> {
+    const count = limit ? limit as unknown as number : DEFAULT_OFFERS_COUNT;
+    let offers = [];
+
     if (tokenPayload) {
-      const count = limit ? limit as unknown as number : DEFAULT_OFFERS_COUNT;
-      const offers = await this.offerService.findAuth(count, tokenPayload.id);
-      this.ok(res, fillDTO(OfferRdo, offers));
+      offers = await this.offerService.findAuth(count, tokenPayload.id);
     } else {
-      const count = limit ? limit as unknown as number : DEFAULT_OFFERS_COUNT;
-      const offers = await this.offerService.find(count);
-      this.ok(res, fillDTO(OfferRdo, offers));
+      offers = await this.offerService.find(count);
     }
+
+    const offersWithRatings = await Promise.all(offers.map(async (offer) => {
+      const preRating = await this.offerService.calculateRating(offer._id.toString());
+      const rating = preRating === null ? 0 : preRating;
+      return { ...offer.toJSON(), rating };
+    }));
+
+    this.ok(res, fillDTO(OfferRdo, offersWithRatings));
   }
 
   public async show({ params, tokenPayload }: Request<ParamOfferId>, res: Response): Promise<void> {
@@ -123,7 +130,12 @@ export default class OfferController extends BaseController {
     } else {
       offer = await this.offerService.findFullOfferInfo(offerId);
     }
-    this.ok(res, fillDTO(FullOfferRdo, offer));
+    const preRating = await this.offerService.calculateRating(offerId);
+    const rating = preRating === null ? 0 : preRating;
+    if (!offer) {
+      throw new HttpError(StatusCodes.NOT_FOUND, 'Offer not found', '');
+    }
+    this.ok(res, fillDTO(FullOfferRdo, {...offer.toJSON(), rating}));
   }
 
   public async getPremium({ params, tokenPayload }: Request, res: Response): Promise<void> {
@@ -135,7 +147,14 @@ export default class OfferController extends BaseController {
     } else {
       offers = await this.offerService.findPremium(cityName);
     }
-    this.ok(res, fillDTO(OfferRdo, offers));
+
+    const offersWithRatings = await Promise.all(offers.map(async (offer) => {
+      const preRating = await this.offerService.calculateRating(offer._id.toString());
+      const rating = preRating === null ? 0 : preRating;
+      return { ...offer.toJSON(), rating };
+    }));
+
+    this.ok(res, fillDTO(OfferRdo, offersWithRatings));
   }
 
   public async getFavorites({ tokenPayload }: Request, res: Response): Promise<void> {

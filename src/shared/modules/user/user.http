@@ -5,12 +5,11 @@ POST http://localhost:5000/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Jack Jones 55",
-  "email": "jackjones55@overlook.com",
-  "avatar": "jackjones55.png",
+  "name": "Dougie2",
+  "email": "dougie2@overlook.com",
+  "avatar": "dougie.png",
   "password": "123456",
-  "isPro": true,
-  "favorites": []
+  "isPro": true
 }
 
 ###
@@ -21,7 +20,7 @@ POST http://localhost:5000/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "jackjones1@overlook.com",
+  "email": "dougie@overlook.com",
   "password": "123456"
 }
 
