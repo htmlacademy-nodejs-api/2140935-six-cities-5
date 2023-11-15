@@ -255,27 +255,6 @@ export class DefaultOfferService implements OfferService {
       }}).exec();
   }
 
-  /*public async calculateRating(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel
-      .aggregate([
-        {$match: {$expr: { $eq: ['$_id', {$toObjectId: offerId}] }}},
-        {
-          $lookup: {
-            from: 'comments',
-            let: { offerId: '$_id' },
-            pipeline: [
-              {$match: {$expr: { $eq: ['$$offerId', '$offerId'] }}},
-            ],
-            as: 'comments',
-          },
-        },
-        {$set: {rating: { $avg: '$comments.rating' }}},
-        {$unset: 'comments'},
-      ])
-      .exec()
-      .then(([result]) => result ?? null);
-  }*/
-
   public async calculateRating(offerId: string): Promise<number | null> {
     const result = await this.offerModel.aggregate([
       { $match: { _id: new mongoose.Types.ObjectId(offerId) } },
@@ -291,14 +270,14 @@ export class DefaultOfferService implements OfferService {
       },
       {
         $addFields: {
-          rating: { $avg: '$comments.rating' }, // Расчет среднего рейтинга
+          rating: { $avg: '$comments.rating' },
         },
       },
       { $unset: 'comments' },
     ]).exec();
 
     if (result.length > 0) {
-      return result[0].rating ?? null; // Возвращает рейтинг или null, если результат не найден
+      return parseFloat(result[0].rating.toFixed(1)) ?? null;
     }
 
     return null;
