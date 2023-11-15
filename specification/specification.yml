@@ -24,13 +24,20 @@ paths:
         - offers
       summary: Получение списка предложений по аренде.
       description: Возвращает массив предложений. Каждое предложение описано в виде объекта.
+      parameters:
+        - in: query
+          name: limit
+          description: Количество предложений, которые нужно получить (если не указано, выведет 60)
+          required: false
+          schema:
+            type: integer
       responses:
         "200":
-          description: Массив избранных предложений
+          description: Массив всех предложений по аренде
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/offers'
+                $ref: '#/components/schemas/shortOffers'
 
     post:
       tags:
@@ -58,7 +65,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/offer'
+                $ref: '#/components/schemas/shortOffer'
         "401":
           description: Пользователь не авторизован.
           content:
@@ -104,7 +111,7 @@ paths:
       tags:
         - offers
       summary: Редактирование предложения.
-      description: Обновляет/изменяет предложение с идентификатором offerId.
+      description: Обновляет/изменяет предложение с идентификатором offerId. Пользователь может редактировать только свои предложения.
       parameters:
       - name: offerId
         in: path
@@ -151,7 +158,7 @@ paths:
       tags:
         - offers
       summary: Удаление предложения.
-      description: Удаляет предложение с идентификатором offerId.
+      description: Удаляет предложение с идентификатором offerId. Пользователь может удалять только свои предложения.
       parameters:
       - name: offerId
         in: path
@@ -183,7 +190,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/authError'
 
-  /premium/{city}:
+  /offers/premium/{city}:
     get:
       tags:
         - offers
@@ -203,7 +210,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/offers'
+                $ref: '#/components/schemas/shortOffers'
         "400":
           description: Ошибка тела запроса.
           content:
@@ -217,7 +224,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/authError'
 
-  /favorites:
+  /offers/favorites:
     get:
       tags:
         - offers
@@ -237,7 +244,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/offers'
+                $ref: '#/components/schemas/shortOffers'
         "401":
           description: Пользователь не авторизован.
           content:
@@ -392,7 +399,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/user'
+              $ref: '#/components/schemas/registerUser'
         required: true
       responses:
         "201":
@@ -400,7 +407,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/authUser'
+                $ref: '#/components/schemas/user'
         "409":
           description: Пользователь с таким email уже существует.
 
@@ -446,7 +453,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/authUser'
+                $ref: '#/components/schemas/user'
         "401":
           description: Пользователь не авторизован.
           content:
@@ -454,26 +461,54 @@ paths:
               schema:
                 $ref: '#/components/schemas/authError'
 
-  /users/logout:
-    post:
-      tags:
-        - users
-      summary: Выход из закрытой части приложения.
-      description: Разлогинивает пользователя и закрывает доступ к закрытой части приложения.
-      parameters:
-        - name: X-Token
-          in: header
-          description: Авторизационный токен пользователя
-          example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20
-          required: true
-          schema:
-            type: string
-      responses:
-        "204":
-          description: Сеанс завершён.
-
 components:
   schemas:
+
+    shortOffer:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Beautiful & luxurious studio at great location"
+        offerDate:
+          type: string
+          format: date-time
+          example: "Mon Oct 30 2023 10:50:28 GMT+0500 (Екатеринбург, стандартное время)"
+        city:
+          type: string
+          example: "Amsterdam"
+        preview:
+          type: string
+          example: "previmage.jpg"
+        isPremium:
+          type: boolean
+          example: true
+        isFavorite:
+          type: boolean
+          example: false
+        rating:
+          type: number
+          example: 4.8
+        property:
+          type: string
+          example: "apartment"
+        price:
+          type: number
+          example: 200
+        commentCount:
+          type: number
+          example: 2
+      required:
+        - title
+        - offerDate
+        - city
+        - preview
+        - isPremium
+        - isFavorite
+        - rating
+        - property
+        - price
+        - commentCount
 
     changeOffer:
       type: object
@@ -498,12 +533,6 @@ components:
         isPremium:
           type: boolean
           example: true
-        isFavorite:
-          type: boolean
-          example: false
-        rating:
-          type: number
-          example: 4.8
         property:
           type: string
           example: "apartment"
@@ -521,9 +550,6 @@ components:
           items:
             type: string
             example: "Heating"
-        userId:
-          type: number
-          example: 1
         location:
           type: object
           properties:
@@ -540,22 +566,16 @@ components:
         - preview
         - images
         - isPremium
-        - isFavorite
-        - rating
         - property
         - roomsCount
         - guestsCount
         - price
         - goods
-        - userId
         - location
 
     offer:
       type: object
       properties:
-        id:
-          type: string
-          example: 1
         title:
           type: string
           example: "Beautiful & luxurious studio at great location"
@@ -618,7 +638,6 @@ components:
               type: number
               example: 4.673877537499948
       required:
-        - id
         - title
         - description
         - offerDate
@@ -642,26 +661,15 @@ components:
       items:
         $ref: '#/components/schemas/offer'
 
+    shortOffers:
+      type: array
+      items:
+        $ref: '#/components/schemas/shortOffer'
+
     authUser:
       type: object
 
       properties:
-        name:
-          type: string
-          example: Parrot Kesha
-
-        email:
-          type: string
-          example: kesha@parrot.com
-
-        avatar:
-          type: string
-          example: avatar1.jpg
-
-        isPro:
-          type: boolean
-          example: false
-
         token:
           type: string
           example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
@@ -686,6 +694,30 @@ components:
           type: boolean
           example: false
 
+    registerUser:
+      type: object
+
+      properties:
+        name:
+          type: string
+          example: Parrot Kesha
+
+        email:
+          type: string
+          example: kesha@parrot.com
+
+        password:
+          type: string
+          example: 123456
+
+        avatar:
+          type: string
+          example: avatar1.jpg
+
+        isPro:
+          type: boolean
+          example: false
+
     login:
       type: object
 
@@ -696,16 +728,13 @@ components:
 
         password:
           type: string
-          example: 12345678
+          example: 123456
 
     commentInfo:
       type: array
       items:
         type: object
         properties:
-          id:
-            type: integer
-            example: 1
           text:
             type: string
             example: "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam."
@@ -731,7 +760,6 @@ components:
                 type: boolean
                 example: false
         required:
-          - id
           - text
           - date
           - rating

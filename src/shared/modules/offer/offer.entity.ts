@@ -1,5 +1,5 @@
 import { defaultClasses, getModelForClass, modelOptions, prop, Ref, Severity } from '@typegoose/typegoose';
-import { DescriptionLength, GuestsNumber, OfferTitleLength, PriceValue, RatingValue, RoomsNumber } from '../../const/index.js';
+import { DescriptionLength, GuestsNumber, OfferTitleLength, PriceValue, RoomsNumber } from '../../const/index.js';
 import { Goods, City, Property, Location } from '../../types/index.js';
 import { UserEntity } from '../user/index.js';
 
@@ -69,8 +69,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
 
   @prop({
     require: true,
-    min: RatingValue.Min,
-    max: RatingValue.Max,
+    default: 0,
   })
   public rating!: number;
 
