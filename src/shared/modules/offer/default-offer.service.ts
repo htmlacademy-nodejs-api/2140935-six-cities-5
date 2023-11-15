@@ -27,7 +27,6 @@ export class DefaultOfferService implements OfferService {
   }
 
   public async findAuth(count: number, userId: string): Promise<DocumentType<OfferEntity>[]> {
-    console.log(userId);
     const user = await this.userModel.findOne({ _id: userId });
     if (!user) {
       throw new Error('Пользователь не найден');
