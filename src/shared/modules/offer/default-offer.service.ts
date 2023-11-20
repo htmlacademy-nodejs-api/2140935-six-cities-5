@@ -1,14 +1,11 @@
 import { inject, injectable } from 'inversify';
 import mongoose from 'mongoose';
-import { OfferService } from './offer-service.interface.js';
-import { Component, SortType } from '../../types/index.js';
+import { OfferService, OfferEntity, CreateOfferDto, UpdateOfferDto } from './index.js';
+import { City, Component, SortType } from '../../types/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { DocumentType, types } from '@typegoose/typegoose';
-import { OfferEntity } from './offer.entity.js';
-import { UserEntity } from '../user/user.entity.js';
-import { CreateOfferDto } from './dto/create-offer.dto.js';
-import { UpdateOfferDto } from './dto/update-offer.dto.js';
-import { MAX_PREMIUM_OFFERS_COUNT } from './offer.constant.js';
+import { UserEntity } from '../user/index.js';
+import { MAX_PREMIUM_OFFERS_COUNT } from '../../const/index.js';
 
 @injectable()
 export class DefaultOfferService implements OfferService {
@@ -199,7 +196,7 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  public async findPremium(cityName: string, userId?: string): Promise<DocumentType<OfferEntity>[]> {
+  public async findPremium(cityName: City, userId?: string): Promise<DocumentType<OfferEntity>[]> {
     let result: DocumentType<OfferEntity>[];
     if (userId) {
       const user = await this.userModel.findOne({ _id: userId });

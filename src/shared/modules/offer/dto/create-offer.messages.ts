@@ -1,11 +1,13 @@
+import { IMAGES_NUMBER, GOODS_MIN_COUNT, OfferTitleLength, DescriptionLength, RoomsNumber, GuestsNumber, PriceValue } from '../../../const/index.js';
+
 export const CreateOfferValidationMessage = {
   title: {
-    minLength: 'Minimum title length must be 10',
-    maxLength: 'Maximum title length must be 100',
+    minLength: `Minimum title length must be ${OfferTitleLength.Min}`,
+    maxLength: `Maximum title length must be ${OfferTitleLength.Max}`,
   },
   description: {
-    minLength: 'Minimum description length must be 20',
-    maxLength: 'Maximum description length must be 1024',
+    minLength: `Minimum description length must be ${DescriptionLength.Min}`,
+    maxLength: `Maximum description length must be ${DescriptionLength.Max}`,
   },
   offerDate: {
     invalidFormat: 'offerDate must be a valid ISO date',
@@ -15,7 +17,7 @@ export const CreateOfferValidationMessage = {
   },
   images: {
     maxLength: 'Too long for field «image»',
-    invalid:  '6 images required',
+    invalid:  `${IMAGES_NUMBER} images required`,
   },
   isPremium: {
     invalidFormat: 'isPremium must be true or false',
@@ -23,26 +25,23 @@ export const CreateOfferValidationMessage = {
   isFavorite: {
     invalidFormat: 'isFavorite must be true or false',
   },
-  rating: {
-    invalidFormat: 'The rating must be a number from 1 to 5. Numbers with 1 decimal place are allowed.',
-  },
   property: {
     invalidFormat: 'Only a item from a given list is allowed',
   },
   roomsCount: {
-    invalidFormat: 'The roomsCount must be a number from 1 to 8.',
+    invalidFormat: `The roomsCount must be a number from ${RoomsNumber.Min} to ${RoomsNumber.Max}.`,
   },
   guestsCount: {
-    invalidFormat: 'The guestsCount must be a number from 1 to 10.',
+    invalidFormat: `The guestsCount must be a number from ${GuestsNumber.Min} to ${GuestsNumber.Max}.`,
   },
   price: {
     invalidFormat: 'Price must be an integer',
-    minValue: 'Minimum price is 100',
-    maxValue: 'Maximum price is 100000',
+    minValue: `Minimum price is ${PriceValue.Min}`,
+    maxValue: `Maximum price is ${PriceValue.Max}`,
   },
   goods: {
     invalidFormat: 'Value must be an array',
-    minSize: 'At least 1 item is required',
+    minSize: `At least ${GOODS_MIN_COUNT} item is required`,
     invalidValue: 'Only an item from a given list is allowed',
   },
   userId: {

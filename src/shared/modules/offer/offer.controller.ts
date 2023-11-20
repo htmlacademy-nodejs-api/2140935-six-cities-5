@@ -2,18 +2,13 @@ import { BaseController, DocumentExistsMiddleware, HttpMethod, ValidateDtoMiddle
 import { HttpError } from '../../libs/rest/index.js';
 import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'inversify';
-import { Component } from '../../types/index.js';
+import { City, Component } from '../../types/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { Request, Response } from 'express';
-import { OfferService } from './offer-service.interface.js';
-import { ParamOfferId } from './type/param-offerid.type.js';
 import { fillDTO } from '../../helpers/index.js';
-import { OfferRdo, FullOfferRdo } from './index.js';
-import { CreateOfferRequest } from './type/create-offer-request.type.js';
-import { UpdateOfferDto } from './dto/update-offer.dto.js';
+import { ParamOfferId, CreateOfferRequest, OfferService, OfferRdo, FullOfferRdo, UpdateOfferDto, CreateOfferDto } from './index.js';
 import { CommentRdo, CommentService } from '../comment/index.js';
-import { CreateOfferDto } from './dto/create-offer.dto.js';
-import { DEFAULT_OFFERS_COUNT } from './offer.constant.js';
+import { DEFAULT_OFFERS_COUNT } from '../../const/index.js';
 
 @injectable()
 export default class OfferController extends BaseController {
@@ -145,9 +140,9 @@ export default class OfferController extends BaseController {
     const cityName = city.charAt(0).toUpperCase() + city.slice(1).toLowerCase();
     let offers = [];
     if (tokenPayload) {
-      offers = await this.offerService.findPremium(cityName, tokenPayload.id);
+      offers = await this.offerService.findPremium(cityName as City, tokenPayload.id);
     } else {
-      offers = await this.offerService.findPremium(cityName);
+      offers = await this.offerService.findPremium(cityName as City);
     }
 
     const offersWithRatings = await Promise.all(offers.map(async (offer) => {

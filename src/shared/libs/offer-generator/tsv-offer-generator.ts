@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
-import { OfferGenerator } from './offer-generator.interface.js';
+import { OfferGenerator } from './index.js';
 import { MockServerData, Property, Goods } from '../../types/index.js';
 import { generateRandomValue, getRandomItem, getRandomItems } from '../../helpers/index.js';
+import { Cities } from '../../const/index.js';
 
 const FIRST_WEEK_DAY = 1;
 const LAST_WEEK_DAY = 7;
@@ -15,10 +16,6 @@ const MAX_ROOM = 4;
 const MIN_GUESTS = 1;
 const MAX_GUESTS = 4;
 
-const MIN_LOCATION = 1;
-const MAX_LOCATION = 10;
-const LOCATION_FLOAT = 6;
-
 export class TSVOfferGenerator implements OfferGenerator {
   constructor(private readonly mockData: MockServerData) {}
 
@@ -28,7 +25,7 @@ export class TSVOfferGenerator implements OfferGenerator {
     const publishedDate = dayjs()
       .subtract(generateRandomValue(FIRST_WEEK_DAY, LAST_WEEK_DAY), 'day')
       .toISOString();
-    const city = getRandomItem<string>(this.mockData.cities);
+    const city = getRandomItem<string>(Object.keys(Cities)) as keyof typeof Cities;
     const preview = getRandomItem<string>(this.mockData.previews);
     const images = getRandomItems<string>(this.mockData.images);
     const isPremium = getRandomItem(['true', 'false']);
@@ -45,8 +42,8 @@ export class TSVOfferGenerator implements OfferGenerator {
     const userType = getRandomItem(['standard', 'pro']);
     const user = [name, email, avatar, userType];
     const commentsCount = 0;
-    const latitude = generateRandomValue(MIN_LOCATION, MAX_LOCATION, LOCATION_FLOAT);
-    const longitude = generateRandomValue(MIN_LOCATION, MAX_LOCATION, LOCATION_FLOAT);
+    const latitude = Cities[city].latitude;
+    const longitude = Cities[city].longitude;
     const location = [latitude, longitude];
 
     return [

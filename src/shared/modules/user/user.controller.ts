@@ -4,16 +4,9 @@ import { StatusCodes } from 'http-status-codes';
 import { BaseController, HttpError, HttpMethod, ValidateDtoMiddleware, ValidateObjectIdMiddleware, UploadFileMiddleware } from '../../libs/rest/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { Component } from '../../types/index.js';
-import { CreateUserRequest } from './create-user-request.type.js';
-import { UserService } from './user-service.interface.js';
+import { UserService, UserRdo, LoginUserRdo, LoggedUserRdo, CreateUserDto, LoginUserDto, UploadUserAvatarRdo, CreateUserRequest, LoginUserRequest } from './index.js';
 import { Config, RestSchema } from '../../libs/config/index.js';
 import { fillDTO } from '../../helpers/index.js';
-import { UserRdo } from './rdo/user.rdo.js';
-import { LoginUserRdo } from './rdo/login-user.rdo.js';
-import { LoggedUserRdo } from './rdo/logged-user.rdo.js';
-import { LoginUserRequest } from './login-user-request.type.js';
-import { CreateUserDto } from './dto/create-user.dto.js';
-import { LoginUserDto } from './dto/login-user.dto.js';
 import { AuthService } from '../auth/index.js';
 
 @injectable()
@@ -77,10 +70,11 @@ export class UserController extends BaseController {
     this.ok(res, responseData);
   }
 
-  public async uploadAvatar(req: Request, res: Response) {
-    this.created(res, {
-      filepath: req.file?.path
-    });
+  public async uploadAvatar({ params, file }: Request, res: Response) {
+    const { userId } = params;
+    const uploadFile = { avatar: file?.filename };
+    await this.userService.updateById(userId, uploadFile);
+    this.created(res, fillDTO(UploadUserAvatarRdo, { filepath: uploadFile.avatar }));
   }
 
   public async checkAuthenticate({ tokenPayload: { email }}: Request, res: Response) {

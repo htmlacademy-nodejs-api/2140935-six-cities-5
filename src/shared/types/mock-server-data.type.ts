@@ -1,7 +1,9 @@
+import { City } from './index.js';
+
 export type MockServerData = {
   titles: string[];
   descriptions: string[];
-  cities: string[];
+  cities: City[];
   previews: string[];
   images: string[];
   names: string[];

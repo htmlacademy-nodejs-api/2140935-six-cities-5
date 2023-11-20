@@ -1,10 +1,8 @@
 import { inject, injectable } from 'inversify';
-import { CommentService } from './comment-service.interface.js';
 import { Component, SortType } from '../../types/index.js';
 import { DocumentType, types } from '@typegoose/typegoose';
-import { CommentEntity } from './comment.entity.js';
-import { CreateCommentDto } from './dto/create-comment.dto.js';
-import { MAX_COMMENTS_COUNT } from './comment.constant.js';
+import { CommentService, CommentEntity, CreateCommentDto } from './index.js';
+import { MAX_COMMENTS_COUNT } from '../../const/index.js';
 
 @injectable()
 export class DefaultCommentService implements CommentService {

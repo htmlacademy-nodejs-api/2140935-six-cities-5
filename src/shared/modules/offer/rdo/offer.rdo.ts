@@ -1,4 +1,5 @@
 import { Expose } from 'class-transformer';
+import { City, Property } from '../../../types/index.js';
 
 export class OfferRdo {
   @Expose()
@@ -8,7 +9,7 @@ export class OfferRdo {
   public offerDate: string;
 
   @Expose()
-  public city: string;
+  public city: City;
 
   @Expose()
   public preview: string;
@@ -23,7 +24,7 @@ export class OfferRdo {
   public rating: number;
 
   @Expose()
-  public property: string;
+  public property: Property;
 
   @Expose()
   public price: number;
