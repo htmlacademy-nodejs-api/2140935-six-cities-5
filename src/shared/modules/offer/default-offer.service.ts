@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import mongoose from 'mongoose';
 import { OfferService } from './offer-service.interface.js';
-import { Component, SortType } from '../../types/index.js';
+import { City, Component, SortType } from '../../types/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { OfferEntity } from './offer.entity.js';
@@ -199,7 +199,7 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  public async findPremium(cityName: string, userId?: string): Promise<DocumentType<OfferEntity>[]> {
+  public async findPremium(cityName: City, userId?: string): Promise<DocumentType<OfferEntity>[]> {
     let result: DocumentType<OfferEntity>[];
     if (userId) {
       const user = await this.userModel.findOne({ _id: userId });

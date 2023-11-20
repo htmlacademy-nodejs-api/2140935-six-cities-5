@@ -1,7 +1,4 @@
-import { City } from './city.enum.js';
-import { Property } from './property.enum.js';
-import { Goods } from './goods.enum.js';
-import { User } from './user.type.js';
+import { City, Property, Goods, User } from './index.js';
 
 export type Offer = {
   title: string;

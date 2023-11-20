@@ -2,9 +2,8 @@ import { inject, injectable } from 'inversify';
 import { StatusCodes } from 'http-status-codes';
 import { Response, Router } from 'express';
 import asyncHandler from 'express-async-handler';
-import { Controller } from './controller.interface.js';
+import { Controller, Route } from '../index.js';
 import { Logger } from '../../logger/index.js';
-import { Route } from '../types/route.interface.js';
 import { PathTransformer } from '../transform/path-transformer.js';
 import { Component } from '../../../types/index.js';
 
