@@ -4,18 +4,10 @@ import { StatusCodes } from 'http-status-codes';
 import { BaseController, HttpError, HttpMethod, ValidateDtoMiddleware, ValidateObjectIdMiddleware, UploadFileMiddleware } from '../../libs/rest/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { Component } from '../../types/index.js';
-import { CreateUserRequest } from './create-user-request.type.js';
-import { UserService } from './user-service.interface.js';
+import { UserService, UserRdo, LoginUserRdo, LoggedUserRdo, CreateUserDto, LoginUserDto, UploadUserAvatarRdo, CreateUserRequest, LoginUserRequest } from './index.js';
 import { Config, RestSchema } from '../../libs/config/index.js';
 import { fillDTO } from '../../helpers/index.js';
-import { UserRdo } from './rdo/user.rdo.js';
-import { LoginUserRdo } from './rdo/login-user.rdo.js';
-import { LoggedUserRdo } from './rdo/logged-user.rdo.js';
-import { LoginUserRequest } from './login-user-request.type.js';
-import { CreateUserDto } from './dto/create-user.dto.js';
-import { LoginUserDto } from './dto/login-user.dto.js';
 import { AuthService } from '../auth/index.js';
-import { UploadUserAvatarRdo } from './rdo/upload-user-avatar.rdo.js';
 
 @injectable()
 export class UserController extends BaseController {

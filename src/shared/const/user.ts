@@ -1,3 +1,5 @@
+export const DEFAULT_AVATAR_FILE_NAME = 'default-avatar.jpg';
+
 export enum UserNameLength {
   Min = 1,
   Max = 15,

@@ -5,15 +5,10 @@ import { inject, injectable } from 'inversify';
 import { City, Component } from '../../types/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { Request, Response } from 'express';
-import { OfferService } from './offer-service.interface.js';
-import { ParamOfferId } from './type/param-offerid.type.js';
 import { fillDTO } from '../../helpers/index.js';
-import { OfferRdo, FullOfferRdo } from './index.js';
-import { CreateOfferRequest } from './type/create-offer-request.type.js';
-import { UpdateOfferDto } from './dto/update-offer.dto.js';
+import { ParamOfferId, CreateOfferRequest, OfferService, OfferRdo, FullOfferRdo, UpdateOfferDto, CreateOfferDto } from './index.js';
 import { CommentRdo, CommentService } from '../comment/index.js';
-import { CreateOfferDto } from './dto/create-offer.dto.js';
-import { DEFAULT_OFFERS_COUNT } from './offer.constant.js';
+import { DEFAULT_OFFERS_COUNT } from '../../const/index.js';
 
 @injectable()
 export default class OfferController extends BaseController {

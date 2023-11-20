@@ -1,11 +1,12 @@
 import { inject, injectable } from 'inversify';
 import { StatusCodes } from 'http-status-codes';
 import { NextFunction, Request, Response } from 'express';
-import { ExceptionFilter } from './exception-filter.interface.js';
+import { ExceptionFilter } from '../index.js';
 import { Logger } from '../../logger/index.js';
 import { Component } from '../../../types/index.js';
 import { createErrorObject } from '../../../helpers/index.js';
 import { HttpError } from '../errors/index.js';
+import { ApplicationError } from '../index.js';
 
 @injectable()
 export class DefaultExceptionFilter implements ExceptionFilter {
@@ -19,14 +20,14 @@ export class DefaultExceptionFilter implements ExceptionFilter {
     this.logger.error(`[${error.detail}]: ${error.httpStatusCode} — ${error.message}`, error);
     res
       .status(error.httpStatusCode)
-      .json(createErrorObject(error.message));
+      .json(createErrorObject(ApplicationError.CommonError, error.message));
   }
 
   private handleOtherError(error: Error, _req: Request, res: Response, _next: NextFunction) {
     this.logger.error(error.message, error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json(createErrorObject(error.message));
+      .json(createErrorObject(ApplicationError.CommonError, error.message));
   }
 
   public catch(error: Error | HttpError, req: Request, res: Response, next: NextFunction): void {

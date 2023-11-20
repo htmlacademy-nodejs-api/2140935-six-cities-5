@@ -1,4 +1,4 @@
-import { City } from './city.enum.js';
+import { City } from './index.js';
 
 export type MockServerData = {
   titles: string[];
